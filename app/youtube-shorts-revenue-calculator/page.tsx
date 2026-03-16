@@ -7,11 +7,11 @@ export default function YouTubeShortsRevenueCalculator() {
     <main className="min-h-screen bg-white text-gray-900 p-10">
       <CalculatorTemplate
         title="YouTube Shorts Revenue Calculator"
+        calculatorKey="/youtube-shorts-revenue-calculator"
         inputs={[
           { label: "Shorts views", key: "views", placeholder: "Number of Shorts views" },
           { label: "RPM ($ per 1,000 views)", key: "rpm", placeholder: "e.g. 0.5" },
         ]}
-        calculate={(v) => ((v.views || 0) / 1000) * (v.rpm || 0)}
         howItWorks="This calculator estimates revenue from YouTube Shorts using your Shorts views and an RPM (revenue per 1,000 views). Shorts RPM is typically lower than long-form video due to different ad products and watch time."
         exampleCalculation="2,000,000 Shorts views ÷ 1,000 × $0.50 RPM = $1,000 estimated revenue"
         formula="Revenue = (Shorts Views ÷ 1,000) × RPM"

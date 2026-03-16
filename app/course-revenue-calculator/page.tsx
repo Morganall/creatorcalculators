@@ -7,17 +7,12 @@ export default function CourseRevenueCalculator() {
     <main className="min-h-screen bg-white text-gray-900 p-10">
       <CalculatorTemplate
         title="Course Revenue Calculator"
+        calculatorKey="/course-revenue-calculator"
         inputs={[
           { label: "Visitors", key: "visitors", placeholder: "Number of visitors" },
           { label: "Conversion Rate (%)", key: "conversion_rate", placeholder: "Conversion rate (e.g. 2)" },
           { label: "Price ($)", key: "price", placeholder: "Course price ($)" },
         ]}
-        calculate={(values) => {
-          const visitors = values.visitors || 0
-          const conversion_rate = values.conversion_rate || 0
-          const price = values.price || 0
-          return visitors * (conversion_rate / 100) * price
-        }}
       />
 
       <section className="max-w-3xl mx-auto mt-12 space-y-6">

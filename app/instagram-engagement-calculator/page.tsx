@@ -7,18 +7,12 @@ export default function InstagramEngagementCalculator() {
     <main className="min-h-screen bg-white text-gray-900 p-10">
       <CalculatorTemplate
         title="Instagram Engagement Calculator"
+        calculatorKey="/instagram-engagement-calculator"
         inputs={[
           { label: "Likes", key: "likes", placeholder: "Number of likes" },
           { label: "Comments", key: "comments", placeholder: "Number of comments" },
           { label: "Followers", key: "followers", placeholder: "Number of followers" },
         ]}
-        calculate={(values) => {
-          const likes = values.likes || 0
-          const comments = values.comments || 0
-          const followers = values.followers || 0
-          if (followers === 0) return 0
-          return ((likes + comments) / followers) * 100
-        }}
       />
 
       <section className="max-w-3xl mx-auto mt-12 space-y-6">

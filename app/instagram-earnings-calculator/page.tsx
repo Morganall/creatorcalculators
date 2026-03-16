@@ -7,18 +7,12 @@ export default function InstagramEarningsCalculator() {
     <main className="min-h-screen bg-white text-gray-900 p-10">
       <CalculatorTemplate
         title="Instagram Earnings Calculator"
+        calculatorKey="/instagram-earnings-calculator"
         inputs={[
           { label: "Followers", key: "followers", placeholder: "Number of followers" },
           { label: "Engagement rate (%)", key: "engagement", placeholder: "e.g. 3" },
           { label: "Rate per 1,000 engaged ($)", key: "rate_per_k", placeholder: "e.g. 50" },
         ]}
-        calculate={(v) => {
-          const f = v.followers || 0
-          const engPct = (v.engagement || 0) / 100
-          const rate = v.rate_per_k || 0
-          const engaged = f * engPct
-          return (engaged / 1000) * rate
-        }}
         howItWorks="This calculator estimates potential Instagram earnings by combining follower count, engagement rate, and a typical rate per 1,000 engaged users. It reflects what brands might pay for reach and engagement."
         exampleCalculation="100,000 followers × 3% engagement = 3,000 engaged; (3,000 ÷ 1,000) × $50 = $150 per post"
         formula="Earnings ≈ (Followers × Engagement Rate ÷ 1000) × Rate Per 1K Engaged"

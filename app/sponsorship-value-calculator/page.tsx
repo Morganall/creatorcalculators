@@ -7,15 +7,11 @@ export default function SponsorshipValueCalculator() {
     <main className="min-h-screen bg-white text-gray-900 p-10">
       <CalculatorTemplate
         title="Sponsorship Value Calculator"
+        calculatorKey="/sponsorship-value-calculator"
         inputs={[
           { label: "Views", key: "views", placeholder: "Number of views" },
           { label: "CPM ($)", key: "cpm", placeholder: "CPM ($ per 1000 views)" },
         ]}
-        calculate={(values) => {
-          const views = values.views || 0
-          const cpm = values.cpm || 0
-          return (views / 1000) * cpm
-        }}
       />
 
       <section className="max-w-3xl mx-auto mt-12 space-y-6">

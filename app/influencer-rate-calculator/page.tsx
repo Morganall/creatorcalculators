@@ -7,15 +7,11 @@ export default function InfluencerRateCalculator() {
     <main className="min-h-screen bg-white text-gray-900 p-10">
       <CalculatorTemplate
         title="Influencer Rate Calculator"
+        calculatorKey="/influencer-rate-calculator"
         inputs={[
           { label: "Followers", key: "followers", placeholder: "Number of followers" },
           { label: "Engagement Rate (%)", key: "engagement_rate", placeholder: "Engagement rate (e.g. 3)" },
         ]}
-        calculate={(values) => {
-          const followers = values.followers || 0
-          const engagement_rate = values.engagement_rate || 0
-          return followers * (engagement_rate / 100) * 0.1
-        }}
       />
 
       <section className="max-w-3xl mx-auto mt-12 space-y-6">

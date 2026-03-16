@@ -7,17 +7,12 @@ export default function AffiliateConversionRevenueCalculator() {
     <main className="min-h-screen bg-white text-gray-900 p-10">
       <CalculatorTemplate
         title="Affiliate Conversion Revenue Calculator"
+        calculatorKey="/affiliate-conversion-revenue-calculator"
         inputs={[
           { label: "Clicks", key: "clicks", placeholder: "Number of clicks" },
           { label: "Conversion rate (%)", key: "conv_rate", placeholder: "e.g. 2.5" },
           { label: "Commission per sale ($)", key: "commission", placeholder: "e.g. 25" },
         ]}
-        calculate={(v) => {
-          const clicks = v.clicks || 0
-          const rate = (v.conv_rate || 0) / 100
-          const commission = v.commission || 0
-          return clicks * rate * commission
-        }}
         howItWorks="This calculator estimates affiliate revenue by multiplying clicks by conversion rate (as a decimal) and commission per sale. It helps you project earnings from affiliate links or landing pages."
         exampleCalculation="1,000 clicks × 2.5% conversion × $25 commission = 25 sales × $25 = $625 revenue"
         formula="Revenue = Clicks × (Conversion Rate ÷ 100) × Commission Per Sale"

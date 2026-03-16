@@ -7,20 +7,13 @@ export default function TikTokEngagementCalculator() {
     <main className="min-h-screen bg-white text-gray-900 p-10">
       <CalculatorTemplate
         title="TikTok Engagement Calculator"
+        calculatorKey="/tiktok-engagement-calculator"
         inputs={[
           { label: "Likes", key: "likes", placeholder: "Number of likes" },
           { label: "Comments", key: "comments", placeholder: "Number of comments" },
           { label: "Shares", key: "shares", placeholder: "Number of shares" },
           { label: "Views", key: "views", placeholder: "Number of views" },
         ]}
-        calculate={(values) => {
-          const likes = values.likes || 0
-          const comments = values.comments || 0
-          const shares = values.shares || 0
-          const views = values.views || 0
-          if (views === 0) return 0
-          return ((likes + comments + shares) / views) * 100
-        }}
       />
 
       <section className="max-w-3xl mx-auto mt-12 space-y-6">

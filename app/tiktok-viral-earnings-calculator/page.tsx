@@ -7,11 +7,11 @@ export default function TikTokViralEarningsCalculator() {
     <main className="min-h-screen bg-white text-gray-900 p-10">
       <CalculatorTemplate
         title="TikTok Viral Earnings Calculator"
+        calculatorKey="/tiktok-viral-earnings-calculator"
         inputs={[
           { label: "Viral video views", key: "views", placeholder: "Total views on video" },
           { label: "RPM for viral content ($)", key: "rpm", placeholder: "e.g. 0.02" },
         ]}
-        calculate={(v) => ((v.views || 0) / 1000) * (v.rpm || 0)}
         howItWorks="This calculator estimates earnings when a TikTok video goes viral. Enter the view count and an estimated RPM (revenue per 1,000 views). Viral content may have different RPM due to watch time and region mix."
         exampleCalculation="5,000,000 views ÷ 1,000 × $0.02 RPM = $100 estimated earnings from this video"
         formula="Earnings = (Views ÷ 1,000) × RPM"

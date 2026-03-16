@@ -7,15 +7,11 @@ export default function PodcastCPMCalculator() {
     <main className="min-h-screen bg-white text-gray-900 p-10">
       <CalculatorTemplate
         title="Podcast CPM Calculator"
+        calculatorKey="/podcast-cpm-calculator"
         inputs={[
           { label: "Downloads", key: "downloads", placeholder: "Number of downloads" },
           { label: "CPM ($)", key: "cpm", placeholder: "CPM ($ per 1000 downloads)" },
         ]}
-        calculate={(values) => {
-          const downloads = values.downloads || 0
-          const cpm = values.cpm || 0
-          return (downloads / 1000) * cpm
-        }}
       />
 
       <section className="max-w-3xl mx-auto mt-12 space-y-6">

@@ -7,11 +7,11 @@ export default function CreatorAdRevenueCalculator() {
     <main className="min-h-screen bg-white text-gray-900 p-10">
       <CalculatorTemplate
         title="Creator Ad Revenue Calculator"
+        calculatorKey="/creator-ad-revenue-calculator"
         inputs={[
           { label: "Impressions (or views)", key: "impressions", placeholder: "Monetized impressions" },
           { label: "CPM ($ per 1,000)", key: "cpm", placeholder: "e.g. 5" },
         ]}
-        calculate={(v) => ((v.impressions || 0) / 1000) * (v.cpm || 0)}
         howItWorks="This calculator estimates ad revenue from total impressions (or views) and CPM. Works for YouTube, podcasts, display ads, or any channel where revenue is sold or earned on a CPM basis."
         exampleCalculation="200,000 impressions ÷ 1,000 × $5 CPM = $1,000 ad revenue"
         formula="Ad Revenue = (Impressions ÷ 1,000) × CPM"

@@ -7,15 +7,11 @@ export default function InfluencerCostPerPostCalculator() {
     <main className="min-h-screen bg-white text-gray-900 p-10">
       <CalculatorTemplate
         title="Influencer Cost Per Post Calculator"
+        calculatorKey="/influencer-cost-per-post-calculator"
         inputs={[
           { label: "Total campaign fee ($)", key: "fee", placeholder: "Total paid to creator" },
           { label: "Number of posts", key: "posts", placeholder: "e.g. 3" },
         ]}
-        calculate={(v) => {
-          const fee = v.fee || 0
-          const posts = v.posts || 1
-          return posts <= 0 ? 0 : fee / posts
-        }}
         howItWorks="This calculator divides total campaign or contract value by the number of posts to get cost per post. Useful for brands to compare creator pricing and for creators to price multi-post packages."
         exampleCalculation="$1,500 total fee ÷ 3 posts = $500 cost per post"
         formula="Cost Per Post = Total Fee ÷ Number of Posts"

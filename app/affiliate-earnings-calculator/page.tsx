@@ -7,17 +7,12 @@ export default function AffiliateEarningsCalculator() {
     <main className="min-h-screen bg-white text-gray-900 p-10">
       <CalculatorTemplate
         title="Affiliate Earnings Calculator"
+        calculatorKey="/affiliate-earnings-calculator"
         inputs={[
           { label: "Clicks", key: "clicks", placeholder: "Number of clicks" },
           { label: "Conversion Rate (%)", key: "conversion_rate", placeholder: "Conversion rate (e.g. 2.5)" },
           { label: "Commission ($)", key: "commission", placeholder: "Commission per sale ($)" },
         ]}
-        calculate={(values) => {
-          const clicks = values.clicks || 0
-          const conversion_rate = values.conversion_rate || 0
-          const commission = values.commission || 0
-          return clicks * (conversion_rate / 100) * commission
-        }}
       />
 
       <section className="max-w-3xl mx-auto mt-12 space-y-6">

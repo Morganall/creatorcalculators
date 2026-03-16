@@ -7,11 +7,11 @@ export default function InstagramReelEarningsCalculator() {
     <main className="min-h-screen bg-white text-gray-900 p-10">
       <CalculatorTemplate
         title="Instagram Reel Earnings Calculator"
+        calculatorKey="/instagram-reel-earnings-calculator"
         inputs={[
           { label: "Reel views", key: "views", placeholder: "Number of views" },
           { label: "RPM ($ per 1,000 views)", key: "rpm", placeholder: "e.g. 0.30" },
         ]}
-        calculate={(v) => ((v.views || 0) / 1000) * (v.rpm || 0)}
         howItWorks="This calculator estimates earnings from Instagram Reels based on total views and an RPM (revenue per 1,000 views). Use it for Reels Play bonuses, ad revenue, or sponsored Reel rates expressed as RPM."
         exampleCalculation="500,000 Reel views ÷ 1,000 × $0.30 RPM = $150 estimated earnings"
         formula="Earnings = (Reel Views ÷ 1,000) × RPM"

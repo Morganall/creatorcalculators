@@ -7,11 +7,11 @@ export default function TikTokCreatorFundCalculator() {
     <main className="min-h-screen bg-white text-gray-900 p-10">
       <CalculatorTemplate
         title="TikTok Creator Fund Calculator"
+        calculatorKey="/tiktok-creator-fund-calculator"
         inputs={[
           { label: "Total views", key: "views", placeholder: "Views in period" },
           { label: "Fund rate ($ per 1,000 views)", key: "rate", placeholder: "e.g. 0.02" },
         ]}
-        calculate={(v) => ((v.views || 0) / 1000) * (v.rate || 0)}
         howItWorks="This calculator estimates earnings from the TikTok Creator Fund (or similar programs) by multiplying your views by an estimated rate per 1,000 views. Actual payouts depend on region, watch time, and program terms."
         exampleCalculation="1,500,000 views ÷ 1,000 × $0.02 = $30 estimated Creator Fund earnings"
         formula="Earnings = (Views ÷ 1,000) × Rate Per 1,000 Views"

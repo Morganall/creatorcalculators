@@ -7,17 +7,12 @@ export default function NewsletterRevenueCalculator() {
     <main className="min-h-screen bg-white text-gray-900 p-10">
       <CalculatorTemplate
         title="Newsletter Revenue Calculator"
+        calculatorKey="/newsletter-revenue-calculator"
         inputs={[
           { label: "Subscribers", key: "subscribers", placeholder: "Number of subscribers" },
           { label: "Conversion Rate (%)", key: "conversion_rate", placeholder: "Conversion to paid (e.g. 5)" },
           { label: "Price ($)", key: "price", placeholder: "Price per subscription ($)" },
         ]}
-        calculate={(values) => {
-          const subscribers = values.subscribers || 0
-          const conversion_rate = values.conversion_rate || 0
-          const price = values.price || 0
-          return subscribers * (conversion_rate / 100) * price
-        }}
       />
 
       <section className="max-w-3xl mx-auto mt-12 space-y-6">

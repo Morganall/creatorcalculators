@@ -7,11 +7,11 @@ export default function YouTubeChannelRevenueCalculator() {
     <main className="min-h-screen bg-white text-gray-900 p-10">
       <CalculatorTemplate
         title="YouTube Channel Revenue Calculator"
+        calculatorKey="/youtube-channel-revenue-calculator"
         inputs={[
           { label: "Total channel views (monthly)", key: "views", placeholder: "Monetized views" },
           { label: "Average CPM ($)", key: "cpm", placeholder: "e.g. 4" },
         ]}
-        calculate={(v) => ((v.views || 0) / 1000) * (v.cpm || 0)}
         howItWorks="This calculator estimates total channel revenue for a period by multiplying total monetized views by your average CPM. Use monthly or yearly views to project ad revenue for the whole channel."
         exampleCalculation="1,000,000 monthly views ÷ 1,000 × $4 CPM = $4,000 estimated monthly channel revenue"
         formula="Channel Revenue = (Total Views ÷ 1,000) × Average CPM"
