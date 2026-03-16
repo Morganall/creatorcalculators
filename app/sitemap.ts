@@ -17,16 +17,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const homepage: MetadataRoute.Sitemap[number] = {
     url: baseUrl,
     lastModified: new Date(),
-    changeFrequency: "weekly",
+    changeFrequency: "monthly",
     priority: 1,
   };
 
-  const calculatorPages: MetadataRoute.Sitemap = calculators.map((calc) => ({
-    url: `${baseUrl}${calc.path}`,
+  const staticPages: MetadataRoute.Sitemap = [
+    "/about",
+    "/contact",
+    "/privacy-policy",
+    "/terms",
+  ].map((path) => ({
+    url: `${baseUrl}${path}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
-    priority: 0.8,
+    priority: 0.6,
   }));
 
-  return [homepage, ...calculatorPages];
+  const calculatorPages: MetadataRoute.Sitemap = calculators.map((calc) => ({
+  url: `${baseUrl}${calc.path}`,
+  lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+  priority: 0.8,
+  }));
+
+  return [homepage, ...staticPages, ...calculatorPages];
 }
