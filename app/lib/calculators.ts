@@ -49,7 +49,7 @@ export const calculators: Calculator[] = [
   },
   {
     name: "TikTok Engagement Rate Calculator",
-    path: "/tiktok-engagement-rate-calculator",
+  path: "/tiktok-engagement-calculator",
     description: "Estimate engagement rate for TikTok posts.",
     category: "TikTok Calculators",
   },
