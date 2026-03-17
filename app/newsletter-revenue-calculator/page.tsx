@@ -10,7 +10,12 @@ export default function NewsletterRevenueCalculator() {
         calculatorKey="/newsletter-revenue-calculator"
         inputs={[
           { label: "Subscribers", key: "subscribers", placeholder: "Number of subscribers" },
-          { label: "Conversion Rate (%)", key: "conversion_rate", placeholder: "Conversion to paid (e.g. 5)" },
+          {
+            label: "Conversion Rate to Paid (%)",
+            key: "conversion_rate",
+            placeholder: "e.g. 5.0%",
+            helper: "What percentage of free subscribers convert to paid or sponsors? Many newsletters see 1%–10%.",
+          },
           { label: "Price ($)", key: "price", placeholder: "Price per subscription ($)" },
         ]}
       />

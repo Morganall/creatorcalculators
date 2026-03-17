@@ -9,9 +9,24 @@ export default function CourseRevenueCalculator() {
         title="Course Revenue Calculator"
         calculatorKey="/course-revenue-calculator"
         inputs={[
-          { label: "Visitors", key: "visitors", placeholder: "Number of visitors" },
-          { label: "Conversion Rate (%)", key: "conversion_rate", placeholder: "Conversion rate (e.g. 2)" },
-          { label: "Price ($)", key: "price", placeholder: "Course price ($)" },
+          {
+            label: "Monthly Visitors",
+            key: "visitors",
+            placeholder: "e.g. 10,000 visitors",
+            helper: "Enter how many people visit your course sales page or funnel in a typical month.",
+          },
+          {
+            label: "Conversion Rate (%)",
+            key: "conversion_rate",
+            placeholder: "e.g. 2.0%",
+            helper: "What percentage of visitors buy your course? Many funnels convert between 1%–5%.",
+          },
+          {
+            label: "Course Price ($)",
+            key: "price",
+            placeholder: "e.g. $199",
+            helper: "Enter the price a student pays for one course purchase.",
+          },
         ]}
       />
 

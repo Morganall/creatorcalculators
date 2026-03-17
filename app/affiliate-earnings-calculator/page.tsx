@@ -10,7 +10,12 @@ export default function AffiliateEarningsCalculator() {
         calculatorKey="/affiliate-earnings-calculator"
         inputs={[
           { label: "Clicks", key: "clicks", placeholder: "Number of clicks" },
-          { label: "Conversion Rate (%)", key: "conversion_rate", placeholder: "Conversion rate (e.g. 2.5)" },
+          {
+            label: "Conversion Rate (%)",
+            key: "conversion_rate",
+            placeholder: "e.g. 2.5%",
+            helper: "What percentage of clicks turn into purchases? Many affiliate programs see 1%–5%.",
+          },
           { label: "Commission ($)", key: "commission", placeholder: "Commission per sale ($)" },
         ]}
       />

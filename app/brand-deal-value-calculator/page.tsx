@@ -9,8 +9,18 @@ export default function BrandDealValueCalculator() {
         title="Brand Deal Value Calculator"
         calculatorKey="/brand-deal-value-calculator"
         inputs={[
-          { label: "Followers", key: "followers", placeholder: "Number of followers" },
-          { label: "Engagement Rate (%)", key: "engagement_rate", placeholder: "Engagement rate (e.g. 3)" },
+          {
+            label: "Number of Followers",
+            key: "followers",
+            placeholder: "e.g. 80,000 followers",
+            helper: "Enter your total follower count for the channel where the brand deal will run.",
+          },
+          {
+            label: "Engagement Rate (%)",
+            key: "engagement_rate",
+            placeholder: "e.g. 5.0%",
+            helper: "Use your recent average engagement rate. Many creators fall between 1%–10%.",
+          },
         ]}
       />
 

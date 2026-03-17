@@ -9,8 +9,18 @@ export default function TikTokEarningsPerViewCalculator() {
         title="TikTok Earnings Per View Calculator"
         calculatorKey="/tiktok-earnings-per-view-calculator"
         inputs={[
-          { label: "Views", key: "views", placeholder: "Total views" },
-          { label: "Earnings per view ($)", key: "epv", placeholder: "e.g. 0.01" },
+          {
+            label: "Total Views",
+            key: "views",
+            placeholder: "e.g. 500,000 views",
+            helper: "Enter the total number of views you want to estimate earnings for.",
+          },
+          {
+            label: "Earnings per View ($)",
+            key: "epv",
+            placeholder: "e.g. $0.01",
+            helper: "Average amount you earn for a single view from the TikTok Creator Fund or ad payouts.",
+          },
         ]}
         howItWorks="This calculator estimates total TikTok earnings by multiplying total views by your average earnings per view. Earnings per view vary by region, content type, and Creator Fund eligibility."
         exampleCalculation="500,000 views × $0.012 per view = $6,000 estimated earnings"

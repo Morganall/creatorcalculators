@@ -9,8 +9,18 @@ export default function InstagramReelEarningsCalculator() {
         title="Instagram Reel Earnings Calculator"
         calculatorKey="/instagram-reel-earnings-calculator"
         inputs={[
-          { label: "Reel views", key: "views", placeholder: "Number of views" },
-          { label: "RPM ($ per 1,000 views)", key: "rpm", placeholder: "e.g. 0.30" },
+          {
+            label: "Reel Views",
+            key: "views",
+            placeholder: "e.g. 500,000 views",
+            helper: "Enter the total number of views on the Reels you want to estimate earnings for.",
+          },
+          {
+            label: "RPM ($ per 1,000 views)",
+            key: "rpm",
+            placeholder: "e.g. $0.30",
+            helper: "Estimated revenue per 1,000 Reel views from bonuses, ad share, or sponsorships.",
+          },
         ]}
         howItWorks="This calculator estimates earnings from Instagram Reels based on total views and an RPM (revenue per 1,000 views). Use it for Reels Play bonuses, ad revenue, or sponsored Reel rates expressed as RPM."
         exampleCalculation="500,000 Reel views ÷ 1,000 × $0.30 RPM = $150 estimated earnings"

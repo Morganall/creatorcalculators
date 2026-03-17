@@ -9,8 +9,18 @@ export default function YouTubeShortsRevenueCalculator() {
         title="YouTube Shorts Revenue Calculator"
         calculatorKey="/youtube-shorts-revenue-calculator"
         inputs={[
-          { label: "Shorts views", key: "views", placeholder: "Number of Shorts views" },
-          { label: "RPM ($ per 1,000 views)", key: "rpm", placeholder: "e.g. 0.5" },
+          {
+            label: "Shorts Views",
+            key: "views",
+            placeholder: "e.g. 2,000,000 views",
+            helper: "Enter the total number of monetized Shorts views for the period you want to estimate.",
+          },
+          {
+            label: "RPM ($ per 1,000 views)",
+            key: "rpm",
+            placeholder: "e.g. $0.50",
+            helper: "Your average revenue per 1,000 Shorts views. Use your YouTube Analytics RPM if available.",
+          },
         ]}
         howItWorks="This calculator estimates revenue from YouTube Shorts using your Shorts views and an RPM (revenue per 1,000 views). Shorts RPM is typically lower than long-form video due to different ad products and watch time."
         exampleCalculation="2,000,000 Shorts views ÷ 1,000 × $0.50 RPM = $1,000 estimated revenue"

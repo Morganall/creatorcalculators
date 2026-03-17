@@ -273,7 +273,7 @@ const calculatorLogic: Record<CalculatorKey, CalculatorLogic> = {
 
 export type CalculatorTemplateProps = {
   title: string
-  inputs: { label: string; key: string; placeholder: string }[]
+  inputs: { label: string; key: string; placeholder: string; helper?: string }[]
   /** Identifier used to select calculation logic inside this component */
   calculatorKey: CalculatorKey
   howItWorks?: string
@@ -307,58 +307,110 @@ export default function CalculatorTemplate({
   faq = defaultFaq,
   relatedCalculators = defaultRelated,
 }: CalculatorTemplateProps) {
-  const [values, setValues] = useState<Record<string, number>>({})
+  const [values, setValues] = useState<Record<string, string>>({})
   const [result, setResult] = useState<number | null>(null)
 
   function handleChange(key: string, value: string) {
     setValues({
       ...values,
-      [key]: Number(value),
+      [key]: value,
     })
   }
 
   function handleCalculate() {
     const logic = calculatorLogic[calculatorKey]
     if (!logic) {
-      // If no matching calculator logic is found, do nothing
       return
     }
-    const output = logic.calculate(values)
+    const numericValues: CalculatorValues = {}
+    for (const [key, value] of Object.entries(values)) {
+      const parsed = parseFloat(value)
+      numericValues[key] = Number.isNaN(parsed) ? 0 : parsed
+    }
+    const output = logic.calculate(numericValues)
     setResult(output)
   }
 
+  function handleReset() {
+    setValues({})
+    setResult(null)
+  }
+
   return (
-    <div className="max-w-xl mx-auto text-center space-y-6">
+    <div className="min-h-screen bg-white px-4 py-10 text-gray-900">
+      <div className="mx-auto max-w-2xl">
+        <div className="mx-auto max-w-xl rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
+          <h1 className="text-center text-3xl font-bold tracking-tight text-gray-900">
+            {title}
+          </h1>
 
-      <h1 className="text-3xl font-bold">{title}</h1>
+          <div className="mt-6 space-y-5">
+            {inputs.map((input) => {
+              const id = `${calculatorKey}-${input.key}`
+              const helperText =
+                input.helper ??
+                `Enter your ${input.label.toLowerCase()}`
 
-      {inputs.map((input) => (
-        <input
-          key={input.key}
-          type="number"
-          placeholder={input.placeholder}
-          className="w-full border rounded-lg p-3"
-          onChange={(e) => handleChange(input.key, e.target.value)}
-        />
-      ))}
+              return (
+                <div key={input.key} className="space-y-1 text-left">
+                  <label
+                    htmlFor={id}
+                    className="block text-sm font-medium text-gray-800"
+                  >
+                    {input.label}
+                  </label>
+                  <input
+                    id={id}
+                    type="number"
+                    inputMode="decimal"
+                    placeholder={input.placeholder}
+                    className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400"
+                    value={values[input.key] ?? ""}
+                    onChange={(e) => handleChange(input.key, e.target.value)}
+                  />
+                  <p className="text-xs text-gray-500">{helperText}</p>
+                </div>
+              )
+            })}
+          </div>
 
-      <button
-        onClick={handleCalculate}
-        className="bg-black text-white px-6 py-2 rounded-lg"
-      >
-        Calculate
-      </button>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={handleCalculate}
+              className="inline-flex items-center justify-center rounded-full bg-black px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+            >
+              Calculate
+            </button>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="inline-flex items-center justify-center rounded-full border border-gray-300 bg-white px-6 py-2.5 text-sm font-medium text-gray-800 shadow-sm hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2"
+            >
+              Reset
+            </button>
+          </div>
 
-      {result !== null && (
-        <div className="text-xl font-semibold">
-          Result:{" "}
-          {calculatorLogic[calculatorKey]?.formatResult
-            ? calculatorLogic[calculatorKey]?.formatResult?.(result)
-            : `$${result.toFixed(2)}`}
+          {result !== null && (
+            <div className="mt-6 rounded-xl bg-gray-50 px-4 py-5 text-center">
+              <div className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                Estimated Result
+              </div>
+              <div className="mt-2 text-3xl font-semibold text-gray-900">
+                {calculatorLogic[calculatorKey]?.formatResult
+                  ? calculatorLogic[calculatorKey]?.formatResult?.(result)
+                  : `$${result.toFixed(2)}`}
+              </div>
+              <p className="mt-2 text-xs text-gray-500">
+                Estimated monthly earnings based on your inputs. Actual results
+                may vary.
+              </p>
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
-      <section className="max-w-3xl mx-auto mt-12 space-y-6 text-left">
+      <section className="mx-auto mt-12 max-w-3xl space-y-6 text-left">
         <h2 className="text-2xl font-bold">How This Calculator Works</h2>
         <p>{howItWorks}</p>
 
@@ -383,7 +435,7 @@ export default function CalculatorTemplate({
         </div>
       </section>
 
-      <section className="mt-12 text-left">
+      <section className="mx-auto mt-12 max-w-3xl text-left">
         <h2 className="text-xl font-semibold mb-4">Related Calculators</h2>
         <div className="space-y-2">
           {relatedCalculators.map((calc) => (

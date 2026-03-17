@@ -9,8 +9,18 @@ export default function InfluencerRateCalculator() {
         title="Influencer Rate Calculator"
         calculatorKey="/influencer-rate-calculator"
         inputs={[
-          { label: "Followers", key: "followers", placeholder: "Number of followers" },
-          { label: "Engagement Rate (%)", key: "engagement_rate", placeholder: "Engagement rate (e.g. 3)" },
+          {
+            label: "Number of Followers",
+            key: "followers",
+            placeholder: "e.g. 50,000 followers",
+            helper: "Enter your total follower count across the platform you’re pricing for.",
+          },
+          {
+            label: "Engagement Rate (%)",
+            key: "engagement_rate",
+            placeholder: "e.g. 3.5%",
+            helper: "Use your average engagement rate from recent posts. Typical range is 1%–10%.",
+          },
         ]}
       />
 
