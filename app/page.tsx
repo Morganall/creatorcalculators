@@ -39,6 +39,53 @@ function CalculatorCard({ calc }: { calc: Calculator }) {
 export default function Home() {
   const [search, setSearch] = useState("")
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "How do creator calculators work?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Creator calculators estimate earnings using inputs like views, engagement rate, and typical platform payouts. They use industry averages to give a rough estimate.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Are these earnings estimates accurate?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "These are estimates based on averages. Actual earnings can vary depending on niche, audience, and monetization strategy.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How do influencers make money?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Influencers earn through brand deals, ads, affiliate marketing, subscriptions, and digital products depending on their platform and audience.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What affects social media earnings?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Factors include audience size, engagement rate, niche, platform, and how you monetize your content.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Which platform pays creators the most?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "It depends, but YouTube typically pays the most through ads, while TikTok and Instagram often rely more on brand deals and partnerships.",
+        },
+      },
+    ],
+  }
+
   const filteredCalculators = useMemo(() => {
     if (!search.trim()) return calculators
     const q = search.trim().toLowerCase()
@@ -189,6 +236,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
     </main>
   )
 }
