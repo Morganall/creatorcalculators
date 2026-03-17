@@ -29,7 +29,7 @@ function CalculatorCard({ calc }: { calc: Calculator }) {
           {calc.description}
         </p>
         <span className="mt-3 inline-block text-sm font-medium text-gray-500 hover:text-gray-700">
-          Open calculator →
+          Calculate now →
         </span>
       </Link>
     </li>
@@ -63,8 +63,10 @@ export default function Home() {
             Creator Calculators
           </h1>
           <p className="mt-4 text-gray-600 text-base sm:text-lg leading-relaxed">
-            Free tools for creators, influencers, and content marketers to
-            estimate earnings, engagement, and growth.
+            Free Creator Calculators for Income, Engagement, and Growth
+          </p>
+          <p className="mt-3 text-gray-600 text-sm sm:text-base leading-relaxed">
+            Estimate how much you can earn on YouTube, TikTok, Instagram, and more using these free creator tools. Calculate revenue, engagement rates, brand deals, and growth potential in seconds.
           </p>
         </div>
       </section>
@@ -87,14 +89,29 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SEO intro */}
+      {/* Popular Calculators */}
       <section className="px-6 pb-10">
-        <div className="mx-auto max-w-3xl">
-          <p className="text-gray-600 text-center text-sm sm:text-base leading-relaxed">
-            Use these free creator calculators to estimate ad revenue, brand
-            deal rates, engagement metrics, and growth across YouTube, TikTok,
-            Instagram, and other platforms. No sign-up required.
-          </p>
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-4 flex items-center justify-between gap-2">
+            <h2 className="text-lg font-semibold text-gray-900">
+              Popular Calculators
+            </h2>
+          </div>
+          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              "TikTok Money Calculator",
+              "YouTube Revenue Calculator",
+              "Instagram Earnings Calculator",
+              "Influencer Rate Calculator",
+              "Affiliate Earnings Calculator",
+              "Newsletter Revenue Calculator",
+            ]
+              .map((name) => calculators.find((c) => c.name === name))
+              .filter((calc): calc is Calculator => Boolean(calc))
+              .map((calc) => (
+                <CalculatorCard key={calc.path} calc={calc} />
+              ))}
+          </ul>
         </div>
       </section>
 
@@ -119,6 +136,57 @@ export default function Home() {
               </div>
             ))
           )}
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="px-6 pb-16">
+        <div className="mx-auto max-w-3xl">
+          <h2 className="text-lg font-semibold text-gray-900 text-center sm:text-left">
+            Frequently Asked Questions
+          </h2>
+          <div className="mt-6 space-y-6 text-sm sm:text-base text-gray-700">
+            <div>
+              <h3 className="font-medium text-gray-900">
+                How do creator calculators work?
+              </h3>
+              <p className="mt-2 leading-relaxed">
+                Creator calculators estimate earnings using inputs like views, engagement rate, and typical platform payouts. They use industry averages to give a rough estimate.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-medium text-gray-900">
+                Are these earnings estimates accurate?
+              </h3>
+              <p className="mt-2 leading-relaxed">
+                These are estimates based on averages. Actual earnings can vary depending on niche, audience, and monetization strategy.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-medium text-gray-900">
+                How do influencers make money?
+              </h3>
+              <p className="mt-2 leading-relaxed">
+                Influencers earn through brand deals, ads, affiliate marketing, subscriptions, and digital products depending on their platform and audience.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-medium text-gray-900">
+                What affects social media earnings?
+              </h3>
+              <p className="mt-2 leading-relaxed">
+                Factors include audience size, engagement rate, niche, platform, and how you monetize your content.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-medium text-gray-900">
+                Which platform pays creators the most?
+              </h3>
+              <p className="mt-2 leading-relaxed">
+                It depends, but YouTube typically pays the most through ads, while TikTok and Instagram often rely more on brand deals and partnerships.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
     </main>
