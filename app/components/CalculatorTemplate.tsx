@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 type CalculatorValues = Record<string, number>
 
@@ -41,6 +41,13 @@ type CalculatorKey =
 type CalculatorLogic = {
   calculate: (values: CalculatorValues) => number
   formatResult?: (value: number) => string
+}
+
+type CalculatorInputConfig = {
+  label: string
+  key: string
+  placeholder: string
+  helper?: string
 }
 
 const calculatorLogic: Record<CalculatorKey, CalculatorLogic> = {
@@ -271,9 +278,53 @@ const calculatorLogic: Record<CalculatorKey, CalculatorLogic> = {
   },
 }
 
+function getDefaultValues(
+  inputs: CalculatorInputConfig[],
+  _calculatorKey: CalculatorKey,
+): Record<string, string> {
+  const defaults: Record<string, string> = {}
+
+  for (const input of inputs) {
+    const key = input.key
+
+    if (key === "followers") {
+      defaults[key] = "50000"
+      continue
+    }
+
+    if (key === "engagement_rate" || key === "engagement") {
+      defaults[key] = "3.5"
+      continue
+    }
+
+    if (key === "posts" || key === "posts_per_month") {
+      defaults[key] = "4"
+      continue
+    }
+  }
+
+  return defaults
+}
+
+function calculateResult(
+  calculatorKey: CalculatorKey,
+  values: Record<string, string>,
+): number | null {
+  const logic = calculatorLogic[calculatorKey]
+  if (!logic) return null
+
+  const numericValues: CalculatorValues = {}
+  for (const [key, value] of Object.entries(values)) {
+    const parsed = parseFloat(value)
+    numericValues[key] = Number.isNaN(parsed) ? 0 : parsed
+  }
+
+  return logic.calculate(numericValues)
+}
+
 export type CalculatorTemplateProps = {
   title: string
-  inputs: { label: string; key: string; placeholder: string; helper?: string }[]
+  inputs: CalculatorInputConfig[]
   /** Identifier used to select calculation logic inside this component */
   calculatorKey: CalculatorKey
   howItWorks?: string
@@ -307,8 +358,26 @@ export default function CalculatorTemplate({
   faq = defaultFaq,
   relatedCalculators = defaultRelated,
 }: CalculatorTemplateProps) {
-  const [values, setValues] = useState<Record<string, string>>({})
+  const defaultValuesRef = useRef<Record<string, string>>(
+    getDefaultValues(inputs, calculatorKey),
+  )
+
+  const [values, setValues] = useState<Record<string, string>>(
+    defaultValuesRef.current,
+  )
   const [result, setResult] = useState<number | null>(null)
+
+  useEffect(() => {
+    // When the calculator key or inputs change, refresh defaults and auto-calculate once.
+    const newDefaults = getDefaultValues(inputs, calculatorKey)
+    defaultValuesRef.current = newDefaults
+    setValues(newDefaults)
+
+    const output = calculateResult(calculatorKey, newDefaults)
+    if (output !== null) {
+      setResult(output)
+    }
+  }, [calculatorKey, inputs])
 
   function handleChange(key: string, value: string) {
     setValues({
@@ -318,22 +387,22 @@ export default function CalculatorTemplate({
   }
 
   function handleCalculate() {
-    const logic = calculatorLogic[calculatorKey]
-    if (!logic) {
-      return
+    const output = calculateResult(calculatorKey, values)
+    if (output !== null) {
+      setResult(output)
     }
-    const numericValues: CalculatorValues = {}
-    for (const [key, value] of Object.entries(values)) {
-      const parsed = parseFloat(value)
-      numericValues[key] = Number.isNaN(parsed) ? 0 : parsed
-    }
-    const output = logic.calculate(numericValues)
-    setResult(output)
   }
 
   function handleReset() {
-    setValues({})
-    setResult(null)
+    const defaults = defaultValuesRef.current
+    setValues(defaults)
+
+    const output = calculateResult(calculatorKey, defaults)
+    if (output !== null) {
+      setResult(output)
+    } else {
+      setResult(null)
+    }
   }
 
   return (
