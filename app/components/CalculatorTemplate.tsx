@@ -1,6 +1,11 @@
 "use client"
 
+import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
+import {
+  calculators,
+  type Calculator as CalculatorMeta,
+} from "../lib/calculators"
 
 type CalculatorValues = Record<string, number>
 
@@ -341,12 +346,7 @@ const defaultFaq: { question: string; answer: string }[] = [
   { question: "What is RPM?", answer: "RPM stands for Revenue Per Mille (per 1,000 views). It represents how much money creators earn for every thousand views." },
   { question: "Is this estimate accurate?", answer: "Actual creator earnings vary based on audience location, ad demand, niche, and platform monetization programs." },
 ]
-const defaultRelated = [
-  { name: "Influencer Rate Calculator", path: "/influencer-rate-calculator" },
-  { name: "Brand Deal Value Calculator", path: "/brand-deal-value-calculator" },
-  { name: "Creator Earnings Calculator", path: "/creator-earnings-calculator" },
-  { name: "Affiliate Earnings Calculator", path: "/affiliate-earnings-calculator" },
-]
+const defaultRelated: { name: string; path: string }[] = []
 
 export default function CalculatorTemplate({
   title,
@@ -404,6 +404,31 @@ export default function CalculatorTemplate({
       setResult(null)
     }
   }
+
+  const currentCalculator: CalculatorMeta | undefined = calculators.find(
+    (c) => c.path === calculatorKey,
+  )
+
+  let resolvedRelated: CalculatorMeta[] = []
+
+  if (relatedCalculators && relatedCalculators.length > 0) {
+    resolvedRelated = relatedCalculators
+      .map((rc) => {
+        const byPath = calculators.find((c) => c.path === rc.path)
+        if (byPath) return byPath
+        const byName = calculators.find((c) => c.name === rc.name)
+        return byName ?? null
+      })
+      .filter((c): c is CalculatorMeta => Boolean(c))
+  } else if (currentCalculator) {
+    resolvedRelated = calculators.filter(
+      (c) =>
+        c.category === currentCalculator.category &&
+        c.path !== currentCalculator.path,
+    )
+  }
+
+  resolvedRelated = resolvedRelated.slice(0, 5)
 
   return (
     <div className="min-h-screen bg-white px-4 py-10 text-gray-900">
@@ -503,17 +528,31 @@ export default function CalculatorTemplate({
           ))}
         </div>
       </section>
-
-      <section className="mx-auto mt-12 max-w-3xl text-left">
-        <h2 className="text-xl font-semibold mb-4">Related Calculators</h2>
-        <div className="space-y-2">
-          {relatedCalculators.map((calc) => (
-            <a key={calc.path} href={calc.path} className="text-blue-600 hover:underline block">
-              {calc.name}
-            </a>
-          ))}
-        </div>
-      </section>
+      {resolvedRelated.length > 0 && (
+        <section className="mx-auto mt-12 max-w-6xl px-0 text-left">
+          <h2 className="text-xl font-semibold mb-4 text-gray-900">
+            Related Calculators
+          </h2>
+          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {resolvedRelated.map((calc) => (
+              <li key={calc.path}>
+                <Link
+                  href={calc.path}
+                  className="block h-full rounded-lg border border-gray-200 bg-white p-6 text-left transition-colors hover:border-gray-300 hover:bg-gray-50"
+                >
+                  <h3 className="font-semibold text-gray-900">{calc.name}</h3>
+                  <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+                    {calc.description}
+                  </p>
+                  <span className="mt-3 inline-block text-sm font-medium text-gray-500 hover:text-gray-700">
+                    Calculate now →
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   )
 }
