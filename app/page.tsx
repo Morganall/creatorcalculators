@@ -99,9 +99,9 @@ export default function Home() {
     <main className="min-h-screen bg-[#F7F7FB] text-[#1F2937]">
       <div className="mx-auto max-w-6xl px-4 pb-24 pt-8 sm:px-6 sm:pt-10">
         {/* Hero + Search */}
-        <section className="relative overflow-hidden rounded-3xl border border-gray-200/60 bg-gradient-to-b from-white/70 to-[#FFF7ED]/25 px-6 py-12 sm:px-10 sm:py-16">
+        <section className="relative overflow-hidden rounded-3xl border border-gray-200/60 bg-gradient-to-b from-white/70 to-[#FFF7ED]/25 px-5 py-10 sm:px-10 sm:py-14">
           <div className="mx-auto max-w-2xl text-center">
-            <h1 className="font-serif text-5xl md:text-6xl font-bold tracking-tight text-gray-900 leading-tight">
+            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-gray-900 leading-tight">
               Creator Calculators
             </h1>
             <p className="mt-5 text-gray-600 text-base sm:text-lg leading-relaxed">
@@ -113,7 +113,7 @@ export default function Home() {
           </div>
 
           <div className="relative mx-auto mt-10 max-w-2xl">
-            <div className="flex items-center gap-3 rounded-full border border-gray-200/80 bg-white/70 px-4 py-3 shadow-sm backdrop-blur">
+            <div className="flex min-h-[44px] items-center gap-3 rounded-full border border-gray-200/80 bg-white/70 px-4 py-2 shadow-sm backdrop-blur">
               <label htmlFor="search" className="sr-only">
                 Search calculators
               </label>
@@ -136,13 +136,13 @@ export default function Home() {
                   placeholder="Search calculators..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full rounded-full border border-transparent bg-transparent py-2 pl-8 pr-3 text-gray-900 placeholder-gray-400 outline-none transition-all duration-200 focus:ring-2 focus:ring-[#5B5FFF]/50"
+                  className="w-full min-h-[44px] rounded-full border border-transparent bg-transparent py-2 pl-8 pr-3 text-gray-900 placeholder-gray-400 outline-none transition-all duration-200 focus:ring-2 focus:ring-[#5B5FFF]/50"
                   aria-label="Search calculators by name or description"
                 />
               </div>
               <button
                 type="button"
-                className="inline-flex h-9 w-24 items-center justify-center rounded-full bg-[#5B5FFF] text-white shadow-sm transition-all duration-200 hover:bg-[#4A4AE0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5B5FFF] focus-visible:ring-offset-2"
+                className="inline-flex min-h-[44px] w-24 items-center justify-center rounded-full bg-[#5B5FFF] text-white shadow-sm transition-all duration-200 hover:bg-[#4A4AE0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5B5FFF] focus-visible:ring-offset-2"
                 onClick={() => {}}
               >
                 <svg
@@ -177,9 +177,9 @@ export default function Home() {
         </section>
 
         {/* Featured Calculators */}
-        <section id="featured" className="mt-14">
+        <section id="featured" className="mt-12 sm:mt-14">
           <div className="mb-8 flex items-center justify-center">
-            <h2 className="font-serif text-2xl font-semibold tracking-tight text-gray-900">
+            <h2 className="font-serif text-xl sm:text-2xl font-semibold tracking-tight text-gray-900">
               Popular Calculators
             </h2>
           </div>
@@ -202,7 +202,7 @@ export default function Home() {
         </section>
 
         {/* Category sections */}
-        <section className="mt-16">
+        <section className="mt-14 sm:mt-16">
           <div className="space-y-14">
             {filteredCalculators.length === 0 ? (
               <p className="py-12 text-center text-gray-500">
@@ -211,7 +211,7 @@ export default function Home() {
             ) : (
               Array.from(byCategory.entries()).map(([category, calcs]) => (
                 <div key={category}>
-                  <h2 className="font-serif text-2xl font-semibold tracking-tight text-gray-900 mb-4">
+                  <h2 className="font-serif text-xl sm:text-2xl font-semibold tracking-tight text-gray-900 mb-4">
                     {category}
                   </h2>
                   <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -226,9 +226,9 @@ export default function Home() {
         </section>
 
         {/* FAQ */}
-        <section className="mt-16">
+        <section className="mt-14 sm:mt-16">
           <div className="mx-auto max-w-3xl">
-            <h2 className="font-serif text-2xl font-semibold tracking-tight text-gray-900 text-center sm:text-left">
+            <h2 className="font-serif text-xl sm:text-2xl font-semibold tracking-tight text-gray-900 text-center sm:text-left">
               Frequently Asked Questions
             </h2>
             <div className="mt-10">

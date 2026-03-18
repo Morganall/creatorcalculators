@@ -434,10 +434,10 @@ export default function CalculatorTemplate({
   resolvedRelated = resolvedRelated.slice(0, 5)
 
   return (
-    <div className="min-h-screen bg-[#F7F7FB] -m-10 px-4 py-20 text-[#1F2937] sm:py-28">
+    <div className="min-h-screen bg-[#F7F7FB] px-4 py-20 text-[#1F2937] sm:-m-10 sm:py-28">
       <div className="mx-auto max-w-2xl">
         <div className="mx-auto max-w-xl rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
-          <h1 className="text-center font-serif text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl leading-[1.1]">
+          <h1 className="text-center font-serif text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl leading-[1.1]">
             {title}
           </h1>
 
@@ -472,18 +472,18 @@ export default function CalculatorTemplate({
             </div>
           </div>
 
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+          <div className="mt-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center sm:gap-6">
             <button
               type="button"
               onClick={handleCalculate}
-              className="inline-flex items-center justify-center rounded-full bg-[#5B5FFF] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#4A4AE0] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5B5FFF] focus-visible:ring-offset-2"
+              className="inline-flex min-h-[44px] w-full items-center justify-center rounded-full bg-[#5B5FFF] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#4A4AE0] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5B5FFF] focus-visible:ring-offset-2 sm:w-auto"
             >
               Calculate
             </button>
             <button
               type="button"
               onClick={handleReset}
-              className="inline-flex items-center justify-center rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-medium text-gray-800 shadow-sm transition-all duration-200 hover:bg-[#F7F7FB] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5B5FFF]/30 focus-visible:ring-offset-2"
+              className="inline-flex min-h-[44px] w-full items-center justify-center rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-medium text-gray-800 shadow-sm transition-all duration-200 hover:bg-[#F7F7FB] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5B5FFF]/30 focus-visible:ring-offset-2 sm:w-auto"
             >
               Reset
             </button>
@@ -491,10 +491,10 @@ export default function CalculatorTemplate({
 
           {result !== null && (
             <div className="mt-8 rounded-2xl bg-gradient-to-b from-[#F0F2FF] to-[#FFF7ED]/70 px-6 py-6 text-center ring-1 ring-[#5B5FFF]/10 editorial-fade-in-up">
-              <div className="text-xs font-semibold uppercase tracking-widest text-gray-600">
+              <div className="text-sm font-semibold uppercase tracking-widest text-gray-600">
                 Estimated Result
               </div>
-              <div className="mt-3 text-5xl font-semibold tracking-tight text-[#5B5FFF] leading-[1.05]">
+              <div className="mt-3 text-4xl font-semibold tracking-tight text-[#5B5FFF] leading-[1.05] sm:text-5xl">
                 {calculatorLogic[calculatorKey]?.formatResult
                   ? calculatorLogic[calculatorKey]?.formatResult?.(result)
                   : `$${result.toFixed(2)}`}
@@ -509,26 +509,26 @@ export default function CalculatorTemplate({
       </div>
 
       <section className="mx-auto mt-16 max-w-3xl space-y-8 text-left">
-        <h2 className="font-serif text-3xl font-bold tracking-tight text-gray-900">
+        <h2 className="font-serif text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
           How This Calculator Works
         </h2>
         <p className="text-gray-700 leading-relaxed">{howItWorks}</p>
 
-        <h3 className="font-serif text-2xl font-semibold tracking-tight text-gray-900">
+        <h3 className="font-serif text-xl font-semibold tracking-tight text-gray-900 sm:text-2xl">
           Example Calculation
         </h3>
         <div className="rounded-xl border border-gray-200/70 bg-gradient-to-b from-[#F7F7FB] to-[#FFF7ED]/60 p-5 text-gray-800 leading-relaxed">
           {exampleCalculation}
         </div>
 
-        <h3 className="font-serif text-2xl font-semibold tracking-tight text-gray-900">
+        <h3 className="font-serif text-xl font-semibold tracking-tight text-gray-900 sm:text-2xl">
           Formula
         </h3>
         <div className="rounded-xl border border-gray-200/70 bg-gradient-to-b from-[#F7F7FB] to-[#FFF7ED]/60 p-5 text-gray-800 leading-relaxed">
           {formula}
         </div>
 
-        <h3 className="font-serif text-2xl font-semibold tracking-tight text-gray-900">
+        <h3 className="font-serif text-xl font-semibold tracking-tight text-gray-900 sm:text-2xl">
           Frequently Asked Questions
         </h3>
         <div className="space-y-6">
@@ -546,7 +546,7 @@ export default function CalculatorTemplate({
       </section>
       {resolvedRelated.length > 0 && (
         <section className="mx-auto mt-16 max-w-6xl px-0 text-left">
-          <h2 className="font-serif text-2xl font-semibold tracking-tight mb-4 text-gray-900">
+          <h2 className="font-serif text-xl font-semibold tracking-tight mb-4 text-gray-900 sm:text-2xl">
             Related Calculators
           </h2>
           <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -556,7 +556,7 @@ export default function CalculatorTemplate({
                   href={calc.path}
                   className="block h-full rounded-2xl border border-gray-200 bg-white p-6 text-left shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.02]"
                 >
-                  <h3 className="font-serif font-semibold text-gray-900 text-lg tracking-tight">
+                  <h3 className="font-serif font-semibold text-gray-900 text-base tracking-tight sm:text-lg">
                     {calc.name}
                   </h3>
                   <p className="mt-2 text-sm text-gray-600 leading-relaxed">

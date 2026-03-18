@@ -30,14 +30,14 @@ export function FeaturedCalculatorCard({ calc }: { calc: Calculator }) {
     <li>
       <Link
         href={calc.path}
-        className="block h-full rounded-2xl border border-gray-200/70 bg-white/70 p-8 text-left shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.01]"
+        className="block h-full rounded-2xl border border-gray-200/70 bg-white/70 p-6 text-left shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.01] sm:p-8"
       >
         <div className="flex items-start gap-4">
-          <div className="mt-1 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-b from-[#5B5FFF]/15 to-[#FFF7ED]/40 text-[#5B5FFF]">
+          <div className="mt-1 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-b from-[#5B5FFF]/15 to-[#FFF7ED]/40 text-[#5B5FFF] sm:h-11 sm:w-11">
             {icon}
           </div>
           <div className="min-w-0">
-            <h2 className="font-serif text-xl font-semibold tracking-tight text-gray-900">
+            <h2 className="font-serif text-lg font-semibold tracking-tight text-gray-900 sm:text-xl">
               {calc.name}
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-gray-600">

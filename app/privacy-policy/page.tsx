@@ -1,10 +1,10 @@
 export default function PrivacyPolicyPage() {
   return (
     <main className="min-h-screen bg-[#F7F7FB] text-[#1F2937]">
-      <section className="px-6 pt-24 pb-28 sm:pt-28 sm:pb-32">
+      <section className="px-4 pt-24 pb-28 sm:px-6 sm:pt-28 sm:pb-32">
         <div className="mx-auto max-w-3xl space-y-10">
           <header className="space-y-3">
-            <h1 className="font-serif text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl leading-[1.15]">
+            <h1 className="font-serif text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl leading-[1.15]">
               Privacy Policy
             </h1>
             <p className="text-sm text-gray-500">

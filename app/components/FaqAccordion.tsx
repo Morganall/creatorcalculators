@@ -37,7 +37,7 @@ export default function FaqAccordion({
           <div key={idx} className="rounded-2xl border border-gray-200/70 bg-white/70">
             <button
               type="button"
-              className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
+              className="flex min-h-[44px] w-full items-center justify-between gap-4 px-5 py-4 text-left sm:px-6 sm:py-5"
               onClick={() => setOpenIndex(open ? null : idx)}
               aria-expanded={open}
             >
@@ -47,7 +47,7 @@ export default function FaqAccordion({
               <Chevron open={open} />
             </button>
             {open && (
-              <div className="px-6 pb-5 text-sm leading-relaxed text-gray-700">
+              <div className="px-5 pb-5 text-sm leading-relaxed text-gray-700 sm:px-6">
                 {item.answer}
               </div>
             )}
