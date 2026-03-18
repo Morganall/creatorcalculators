@@ -112,10 +112,10 @@ export default function Home() {
             Creator Calculators
           </h1>
           <p className="mt-5 text-gray-600 text-base sm:text-lg leading-relaxed">
-            Trusted estimates for income, engagement, and growth.
+            Free Creator Calculators for Income, Engagement, and Growth
           </p>
           <p className="mt-3 text-gray-600 text-sm sm:text-base leading-relaxed">
-            Calm, editorial tools for creators and marketers—built to help you plan with clarity across YouTube, TikTok, Instagram, and more.
+            Estimate how much you can earn on YouTube, TikTok, Instagram, and more using these free creator tools. Calculate revenue, engagement rates, brand deals, and growth potential in seconds.
           </p>
         </div>
       </section>
