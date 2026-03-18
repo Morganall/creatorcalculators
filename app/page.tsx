@@ -22,7 +22,7 @@ function CalculatorCard({ calc }: { calc: Calculator }) {
     <li>
       <Link
         href={calc.path}
-        className="block h-full rounded-2xl border border-gray-200 bg-white p-6 text-left shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.02] hover:border-gray-200"
+        className="block h-full rounded-2xl border border-gray-200 bg-gradient-to-b from-white to-[#FFF7ED]/20 p-8 text-left shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.02] hover:border-gray-200"
       >
         <h2 className="font-serif text-xl font-semibold tracking-tight text-gray-900">
           {calc.name}
@@ -108,7 +108,7 @@ export default function Home() {
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-b from-[#F7F7FB] via-[#F7F7FB] to-[#FFF7ED]/70 py-28 px-6 sm:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h1 className="font-serif text-6xl font-bold tracking-tight text-gray-900 leading-[1.05]">
+          <h1 className="font-serif text-5xl md:text-6xl font-bold tracking-tight text-gray-900 leading-tight">
             Creator Calculators
           </h1>
           <p className="mt-5 text-gray-600 text-base sm:text-lg leading-relaxed">
@@ -121,8 +121,8 @@ export default function Home() {
       </section>
 
       {/* Search */}
-      <section className="px-6 pb-12 sm:pb-16">
-        <div className="mx-auto max-w-2xl">
+      <section className="px-6 py-16 sm:py-20">
+        <div className="mx-auto max-w-2xl rounded-3xl border border-gray-200/70 bg-gradient-to-b from-white/70 to-[#FFF7ED]/30 p-6 shadow-sm backdrop-blur">
           <label htmlFor="search" className="sr-only">
             Search calculators
           </label>
@@ -132,21 +132,21 @@ export default function Home() {
             placeholder="Search calculators..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 shadow-sm transition-all duration-200 focus:border-[#5B5FFF] focus:outline-none focus:ring-2 focus:ring-[#5B5FFF]/30"
+            className="w-full rounded-full border border-gray-200 bg-white px-6 py-3 text-gray-900 placeholder-gray-400 shadow-sm transition-all duration-200 focus:border-[#5B5FFF] focus:outline-none focus:ring-2 focus:ring-[#5B5FFF]"
             aria-label="Search calculators by name or description"
           />
         </div>
       </section>
 
       {/* Popular Calculators */}
-      <section className="px-6 pb-20">
+      <section className="px-6 pb-28">
         <div className="mx-auto max-w-6xl">
           <div className="mb-8 flex items-center justify-between gap-2">
             <h2 className="font-serif text-2xl font-semibold tracking-tight text-gray-900">
               Popular Calculators
             </h2>
           </div>
-          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 rounded-3xl border border-gray-200/70 bg-gradient-to-b from-white/70 to-[#FFF7ED]/20 p-6 shadow-sm">
             {[
               "TikTok Money Calculator",
               "YouTube Revenue Calculator",
@@ -189,46 +189,46 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="px-6 pb-20">
+      <section className="px-6 pb-28">
         <div className="mx-auto max-w-3xl">
           <h2 className="font-serif text-2xl font-semibold tracking-tight text-gray-900 text-center sm:text-left">
             Frequently Asked Questions
           </h2>
-          <div className="mt-10 space-y-8 text-sm sm:text-base text-gray-700">
-            <div>
-              <h3 className="font-medium text-gray-900">
+          <div className="mt-10 space-y-6 text-sm sm:text-base text-gray-700">
+            <div className="rounded-2xl border border-gray-200/70 bg-white/70 p-6 shadow-sm transition-all duration-200 hover:shadow-md">
+              <h3 className="font-serif font-medium tracking-tight text-gray-900">
                 How do creator calculators work?
               </h3>
               <p className="mt-2 leading-relaxed">
                 Creator calculators estimate earnings using inputs like views, engagement rate, and typical platform payouts. They use industry averages to give a rough estimate.
               </p>
             </div>
-            <div>
-              <h3 className="font-medium text-gray-900">
+            <div className="rounded-2xl border border-gray-200/70 bg-white/70 p-6 shadow-sm transition-all duration-200 hover:shadow-md">
+              <h3 className="font-serif font-medium tracking-tight text-gray-900">
                 Are these earnings estimates accurate?
               </h3>
               <p className="mt-2 leading-relaxed">
                 These are estimates based on averages. Actual earnings can vary depending on niche, audience, and monetization strategy.
               </p>
             </div>
-            <div>
-              <h3 className="font-medium text-gray-900">
+            <div className="rounded-2xl border border-gray-200/70 bg-white/70 p-6 shadow-sm transition-all duration-200 hover:shadow-md">
+              <h3 className="font-serif font-medium tracking-tight text-gray-900">
                 How do influencers make money?
               </h3>
               <p className="mt-2 leading-relaxed">
                 Influencers earn through brand deals, ads, affiliate marketing, subscriptions, and digital products depending on their platform and audience.
               </p>
             </div>
-            <div>
-              <h3 className="font-medium text-gray-900">
+            <div className="rounded-2xl border border-gray-200/70 bg-white/70 p-6 shadow-sm transition-all duration-200 hover:shadow-md">
+              <h3 className="font-serif font-medium tracking-tight text-gray-900">
                 What affects social media earnings?
               </h3>
               <p className="mt-2 leading-relaxed">
                 Factors include audience size, engagement rate, niche, platform, and how you monetize your content.
               </p>
             </div>
-            <div>
-              <h3 className="font-medium text-gray-900">
+            <div className="rounded-2xl border border-gray-200/70 bg-white/70 p-6 shadow-sm transition-all duration-200 hover:shadow-md">
+              <h3 className="font-serif font-medium tracking-tight text-gray-900">
                 Which platform pays creators the most?
               </h3>
               <p className="mt-2 leading-relaxed">
