@@ -40,6 +40,11 @@ export default function RootLayout({
       <body
         className={`${geistMono.variable} font-sans antialiased bg-[#F7F7FB] text-[#1F2937]`}
       >
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3075743459979903"
+          crossorigin="anonymous"
+        ></script>
         <div className="min-h-screen flex flex-col overflow-x-hidden">
           <header className="border-b border-gray-200/60 bg-[#F7F7FB]/80 backdrop-blur">
             <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-5">
