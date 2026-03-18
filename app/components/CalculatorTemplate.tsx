@@ -358,12 +358,13 @@ export default function CalculatorTemplate({
   faq = defaultFaq,
   relatedCalculators = defaultRelated,
 }: CalculatorTemplateProps) {
+  const initialDefaults = getDefaultValues(inputs, calculatorKey)
   const defaultValuesRef = useRef<Record<string, string>>(
-    getDefaultValues(inputs, calculatorKey),
+    initialDefaults,
   )
 
   const [values, setValues] = useState<Record<string, string>>(
-    defaultValuesRef.current,
+    initialDefaults,
   )
   const [result, setResult] = useState<number | null>(null)
 
@@ -371,10 +372,12 @@ export default function CalculatorTemplate({
     // When the calculator key or inputs change, refresh defaults and auto-calculate once.
     const newDefaults = getDefaultValues(inputs, calculatorKey)
     defaultValuesRef.current = newDefaults
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setValues(newDefaults)
 
     const output = calculateResult(calculatorKey, newDefaults)
     if (output !== null) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setResult(output)
     }
   }, [calculatorKey, inputs])

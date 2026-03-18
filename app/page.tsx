@@ -1,12 +1,13 @@
 "use client"
 
-import Link from "next/link"
-import { useState, useMemo } from "react"
+import { useState } from "react"
 import {
   calculators,
   CALCULATOR_CATEGORIES,
   type Calculator,
 } from "./lib/calculators"
+import { FeaturedCalculatorCard } from "./components/FeaturedCalculatorCard"
+import FaqAccordion from "./components/FaqAccordion"
 
 function groupByCategory(calcs: Calculator[]) {
   const map = new Map<string, Calculator[]>()
@@ -15,27 +16,6 @@ function groupByCategory(calcs: Calculator[]) {
     if (inCategory.length > 0) map.set(category, inCategory)
   }
   return map
-}
-
-function CalculatorCard({ calc }: { calc: Calculator }) {
-  return (
-    <li>
-      <Link
-        href={calc.path}
-        className="block h-full rounded-2xl border border-gray-200 bg-gradient-to-b from-white to-[#FFF7ED]/20 p-8 text-left shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.02] hover:border-gray-200"
-      >
-        <h2 className="font-serif text-xl font-semibold tracking-tight text-gray-900">
-          {calc.name}
-        </h2>
-        <p className="mt-2 text-sm leading-relaxed text-gray-600">
-          {calc.description}
-        </p>
-        <span className="mt-4 inline-block text-sm font-medium text-gray-500 transition-colors hover:text-gray-700">
-          Calculate now →
-        </span>
-      </Link>
-    </li>
-  )
 }
 
 export default function Home() {
@@ -88,65 +68,122 @@ export default function Home() {
     ],
   }
 
-  const filteredCalculators = useMemo(() => {
+  const filteredCalculators = (() => {
     if (!search.trim()) return calculators
     const q = search.trim().toLowerCase()
     return calculators.filter(
       (calc) =>
         calc.name.toLowerCase().includes(q) ||
-        calc.description.toLowerCase().includes(q)
+        calc.description.toLowerCase().includes(q),
     )
-  }, [search])
+  })()
 
-  const byCategory = useMemo(
-    () => groupByCategory(filteredCalculators),
-    [filteredCalculators]
-  )
+  const byCategory = groupByCategory(filteredCalculators)
+
+  const faqItems = (faqJsonLd.mainEntity as unknown as Array<{
+    name: string
+    acceptedAnswer?: { text: string }
+  }>).map((item) => ({
+    question: item.name,
+    answer: item.acceptedAnswer?.text ?? "",
+  }))
+
+  const visibleFaqItems = faqItems.slice(0, 3)
+
+  const faqJsonLdForUI = {
+    ...faqJsonLd,
+    mainEntity: faqJsonLd.mainEntity.slice(0, 3),
+  }
 
   return (
     <main className="min-h-screen bg-[#F7F7FB] text-[#1F2937]">
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#F7F7FB] via-[#F7F7FB] to-[#FFF7ED]/70 py-28 px-6 sm:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h1 className="font-serif text-5xl md:text-6xl font-bold tracking-tight text-gray-900 leading-tight">
-            Creator Calculators
-          </h1>
-          <p className="mt-5 text-gray-600 text-base sm:text-lg leading-relaxed">
-            Free Creator Calculators for Income, Engagement, and Growth
-          </p>
-          <p className="mt-3 text-gray-600 text-sm sm:text-base leading-relaxed">
-            Estimate how much you can earn on YouTube, TikTok, Instagram, and more using these free creator tools. Calculate revenue, engagement rates, brand deals, and growth potential in seconds.
-          </p>
-        </div>
-      </section>
+      <div className="mx-auto max-w-6xl px-4 pb-24 pt-8 sm:px-6 sm:pt-10">
+        {/* Hero + Search */}
+        <section className="relative overflow-hidden rounded-3xl border border-gray-200/60 bg-gradient-to-b from-white/70 to-[#FFF7ED]/25 px-6 py-12 sm:px-10 sm:py-16">
+          <div className="mx-auto max-w-2xl text-center">
+            <h1 className="font-serif text-5xl md:text-6xl font-bold tracking-tight text-gray-900 leading-tight">
+              Creator Calculators
+            </h1>
+            <p className="mt-5 text-gray-600 text-base sm:text-lg leading-relaxed">
+              Free Creator Calculators for Income, Engagement, and Growth
+            </p>
+            <p className="mt-3 text-gray-600 text-sm sm:text-base leading-relaxed">
+              Estimate how much you can earn on YouTube, TikTok, Instagram, and more using these free creator tools. Calculate revenue, engagement rates, brand deals, and growth potential in seconds.
+            </p>
+          </div>
 
-      {/* Search */}
-      <section className="px-6 py-16 sm:py-20">
-        <div className="mx-auto max-w-2xl rounded-3xl border border-gray-200/70 bg-gradient-to-b from-white/70 to-[#FFF7ED]/30 p-6 shadow-sm backdrop-blur">
-          <label htmlFor="search" className="sr-only">
-            Search calculators
-          </label>
-          <input
-            id="search"
-            type="search"
-            placeholder="Search calculators..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-full border border-gray-200 bg-white px-6 py-3 text-gray-900 placeholder-gray-400 shadow-sm transition-all duration-200 focus:border-[#5B5FFF] focus:outline-none focus:ring-2 focus:ring-[#5B5FFF]"
-            aria-label="Search calculators by name or description"
-          />
-        </div>
-      </section>
+          <div className="relative mx-auto mt-10 max-w-2xl">
+            <div className="flex items-center gap-3 rounded-full border border-gray-200/80 bg-white/70 px-4 py-3 shadow-sm backdrop-blur">
+              <label htmlFor="search" className="sr-only">
+                Search calculators
+              </label>
+              <div className="relative flex-1">
+                <svg
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M8.5 2a6.5 6.5 0 1 0 4.07 11.57l3.43 3.43a1 1 0 0 0 1.41-1.41l-3.43-3.43A6.5 6.5 0 0 0 8.5 2Zm0 2a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <input
+                  id="search"
+                  type="search"
+                  placeholder="Search calculators..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full rounded-full border border-transparent bg-transparent py-2 pl-8 pr-3 text-gray-900 placeholder-gray-400 outline-none transition-all duration-200 focus:ring-2 focus:ring-[#5B5FFF]/50"
+                  aria-label="Search calculators by name or description"
+                />
+              </div>
+              <button
+                type="button"
+                className="inline-flex h-9 w-24 items-center justify-center rounded-full bg-[#5B5FFF] text-white shadow-sm transition-all duration-200 hover:bg-[#4A4AE0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5B5FFF] focus-visible:ring-offset-2"
+                onClick={() => {}}
+              >
+                <svg
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  className="h-4 w-4"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M8.5 2a6.5 6.5 0 1 0 4.07 11.57l3.43 3.43a1 1 0 0 0 1.41-1.41l-3.43-3.43A6.5 6.5 0 0 0 8.5 2Zm0 2a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
 
-      {/* Popular Calculators */}
-      <section className="px-6 pb-28">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-8 flex items-center justify-between gap-2">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+            <svg
+              viewBox="0 0 1440 320"
+              preserveAspectRatio="none"
+              className="absolute -bottom-32 left-0 h-64 w-full"
+            >
+              <path
+                fill="#FFF7ED"
+                opacity="0.6"
+                d="M0,96L60,112C120,128,240,160,360,165.3C480,171,600,149,720,138.7C840,128,960,128,1080,144C1200,160,1320,192,1380,208L1440,224L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
+              />
+            </svg>
+          </div>
+        </section>
+
+        {/* Featured Calculators */}
+        <section id="featured" className="mt-14">
+          <div className="mb-8 flex items-center justify-center">
             <h2 className="font-serif text-2xl font-semibold tracking-tight text-gray-900">
               Popular Calculators
             </h2>
           </div>
-          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 rounded-3xl border border-gray-200/70 bg-gradient-to-b from-white/70 to-[#FFF7ED]/20 p-6 shadow-sm">
+          <ul className="grid gap-6 sm:grid-cols-2">
             {[
               "TikTok Money Calculator",
               "YouTube Revenue Calculator",
@@ -157,90 +194,53 @@ export default function Home() {
             ]
               .map((name) => calculators.find((c) => c.name === name))
               .filter((calc): calc is Calculator => Boolean(calc))
+              .slice(0, 4)
               .map((calc) => (
-                <CalculatorCard key={calc.path} calc={calc} />
+                <FeaturedCalculatorCard key={calc.path} calc={calc} />
               ))}
           </ul>
-        </div>
-      </section>
+        </section>
 
-      {/* Category sections */}
-      <section className="px-6 pb-28">
-        <div className="mx-auto max-w-6xl space-y-14">
-          {filteredCalculators.length === 0 ? (
-            <p className="py-12 text-center text-gray-500">
-              No calculators match &quot;{search}&quot;. Try a different search.
-            </p>
-          ) : (
-            Array.from(byCategory.entries()).map(([category, calcs]) => (
-              <div key={category}>
-                <h2 className="font-serif text-2xl font-semibold tracking-tight text-gray-900 mb-4">
-                  {category}
-                </h2>
-                <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {calcs.map((calc) => (
-                    <CalculatorCard key={calc.path} calc={calc} />
-                  ))}
-                </ul>
-              </div>
-            ))
-          )}
-        </div>
-      </section>
+        {/* Category sections */}
+        <section className="mt-16">
+          <div className="space-y-14">
+            {filteredCalculators.length === 0 ? (
+              <p className="py-12 text-center text-gray-500">
+                No calculators match &quot;{search}&quot;. Try a different search.
+              </p>
+            ) : (
+              Array.from(byCategory.entries()).map(([category, calcs]) => (
+                <div key={category}>
+                  <h2 className="font-serif text-2xl font-semibold tracking-tight text-gray-900 mb-4">
+                    {category}
+                  </h2>
+                  <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {calcs.map((calc) => (
+                      <FeaturedCalculatorCard key={calc.path} calc={calc} />
+                    ))}
+                  </ul>
+                </div>
+              ))
+            )}
+          </div>
+        </section>
 
-      {/* FAQ */}
-      <section className="px-6 pb-28">
-        <div className="mx-auto max-w-3xl">
-          <h2 className="font-serif text-2xl font-semibold tracking-tight text-gray-900 text-center sm:text-left">
-            Frequently Asked Questions
-          </h2>
-          <div className="mt-10 space-y-6 text-sm sm:text-base text-gray-700">
-            <div className="rounded-2xl border border-gray-200/70 bg-white/70 p-6 shadow-sm transition-all duration-200 hover:shadow-md">
-              <h3 className="font-serif font-medium tracking-tight text-gray-900">
-                How do creator calculators work?
-              </h3>
-              <p className="mt-2 leading-relaxed">
-                Creator calculators estimate earnings using inputs like views, engagement rate, and typical platform payouts. They use industry averages to give a rough estimate.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-gray-200/70 bg-white/70 p-6 shadow-sm transition-all duration-200 hover:shadow-md">
-              <h3 className="font-serif font-medium tracking-tight text-gray-900">
-                Are these earnings estimates accurate?
-              </h3>
-              <p className="mt-2 leading-relaxed">
-                These are estimates based on averages. Actual earnings can vary depending on niche, audience, and monetization strategy.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-gray-200/70 bg-white/70 p-6 shadow-sm transition-all duration-200 hover:shadow-md">
-              <h3 className="font-serif font-medium tracking-tight text-gray-900">
-                How do influencers make money?
-              </h3>
-              <p className="mt-2 leading-relaxed">
-                Influencers earn through brand deals, ads, affiliate marketing, subscriptions, and digital products depending on their platform and audience.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-gray-200/70 bg-white/70 p-6 shadow-sm transition-all duration-200 hover:shadow-md">
-              <h3 className="font-serif font-medium tracking-tight text-gray-900">
-                What affects social media earnings?
-              </h3>
-              <p className="mt-2 leading-relaxed">
-                Factors include audience size, engagement rate, niche, platform, and how you monetize your content.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-gray-200/70 bg-white/70 p-6 shadow-sm transition-all duration-200 hover:shadow-md">
-              <h3 className="font-serif font-medium tracking-tight text-gray-900">
-                Which platform pays creators the most?
-              </h3>
-              <p className="mt-2 leading-relaxed">
-                It depends, but YouTube typically pays the most through ads, while TikTok and Instagram often rely more on brand deals and partnerships.
-              </p>
+        {/* FAQ */}
+        <section className="mt-16">
+          <div className="mx-auto max-w-3xl">
+            <h2 className="font-serif text-2xl font-semibold tracking-tight text-gray-900 text-center sm:text-left">
+              Frequently Asked Questions
+            </h2>
+            <div className="mt-10">
+              <FaqAccordion items={visibleFaqItems} />
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
+
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLdForUI) }}
       />
     </main>
   )
