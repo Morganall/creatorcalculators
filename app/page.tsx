@@ -101,7 +101,7 @@ export default function Home() {
         {/* Hero + Search */}
         <section className="relative overflow-hidden rounded-3xl border border-gray-200/60 bg-gradient-to-b from-white/70 to-[#FFF7ED]/25 px-5 py-10 sm:px-10 sm:py-14">
           <div className="mx-auto max-w-2xl text-center">
-            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-gray-900 leading-tight">
+            <h1 className="font-serif text-[2.6rem] sm:text-[3.25rem] md:text-[4rem] font-bold tracking-tight text-gray-900 leading-[1.05]">
               Creator Calculators
             </h1>
             <p className="mt-5 text-gray-600 text-base sm:text-lg leading-relaxed">

@@ -4,7 +4,7 @@ export default function AboutPage() {
       <section className="px-4 pt-24 pb-28 sm:px-6 sm:pt-28 sm:pb-32">
         <div className="mx-auto max-w-3xl space-y-8">
           <header>
-            <h1 className="font-serif text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-[1.15]">
+            <h1 className="font-serif text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-[1.05]">
               About Creator Calculators
             </h1>
           </header>

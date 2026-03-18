@@ -434,10 +434,10 @@ export default function CalculatorTemplate({
   resolvedRelated = resolvedRelated.slice(0, 5)
 
   return (
-    <div className="min-h-screen bg-[#F7F7FB] px-4 py-20 text-[#1F2937] sm:-m-10 sm:py-28">
+    <div className="min-h-screen bg-[#F7F7FB] px-4 py-20 text-[#1F2937] sm:-mt-10 sm:py-28">
       <div className="mx-auto max-w-2xl">
         <div className="mx-auto max-w-xl rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
-          <h1 className="text-center font-serif text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl leading-[1.1]">
+          <h1 className="text-center font-serif text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl leading-[1.05]">
             {title}
           </h1>
 
@@ -545,7 +545,7 @@ export default function CalculatorTemplate({
         </div>
       </section>
       {resolvedRelated.length > 0 && (
-        <section className="mx-auto mt-16 max-w-6xl px-0 text-left">
+        <section className="mx-auto mt-16 max-w-6xl px-4 sm:px-6 text-left">
           <h2 className="font-serif text-xl font-semibold tracking-tight mb-4 text-gray-900 sm:text-2xl">
             Related Calculators
           </h2>

@@ -5,6 +5,7 @@ import "./globals.css"
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
+  weight: ["400", "600", "700"],
   variable: "--font-serif",
   display: "swap",
 })
@@ -39,7 +40,7 @@ export default function RootLayout({
       <body
         className={`${geistMono.variable} font-sans antialiased bg-[#F7F7FB] text-[#1F2937]`}
       >
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col overflow-x-hidden">
           <header className="border-b border-gray-200/60 bg-[#F7F7FB]/80 backdrop-blur">
             <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-5">
               <Link
@@ -68,14 +69,6 @@ export default function RootLayout({
                   </li>
                 </ul>
               </nav>
-              <div className="block sm:block">
-                <Link
-                  href="/contact"
-                  className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-[#5B5FFF] px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#4A4AE0] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5B5FFF] focus-visible:ring-offset-2"
-                >
-                  Contact
-                </Link>
-              </div>
             </div>
           </header>
 
