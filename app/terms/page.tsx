@@ -4,7 +4,7 @@ export default function TermsPage() {
       <section className="px-6 pt-24 pb-28 sm:pt-28 sm:pb-32">
         <div className="mx-auto max-w-3xl space-y-10">
           <header className="space-y-3">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <h1 className="font-serif text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               Terms of Use
             </h1>
             <p className="text-sm text-gray-500">
@@ -15,7 +15,7 @@ export default function TermsPage() {
           <section aria-labelledby="acceptance-heading" className="space-y-3">
             <h2
               id="acceptance-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-xl font-semibold text-gray-900"
             >
               Acceptance of terms
             </h2>
@@ -29,7 +29,7 @@ export default function TermsPage() {
           <section aria-labelledby="informational-use-heading" className="space-y-3">
             <h2
               id="informational-use-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-xl font-semibold text-gray-900"
             >
               Informational purpose and calculator estimates
             </h2>
@@ -55,7 +55,7 @@ export default function TermsPage() {
           <section aria-labelledby="no-guarantees-heading" className="space-y-3">
             <h2
               id="no-guarantees-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-xl font-semibold text-gray-900"
             >
               No guarantees or warranties
             </h2>
@@ -75,7 +75,7 @@ export default function TermsPage() {
           <section aria-labelledby="limitation-heading" className="space-y-3">
             <h2
               id="limitation-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-xl font-semibold text-gray-900"
             >
               Limitation of liability
             </h2>
@@ -94,7 +94,7 @@ export default function TermsPage() {
           <section aria-labelledby="user-responsibilities-heading" className="space-y-3">
             <h2
               id="user-responsibilities-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-xl font-semibold text-gray-900"
             >
               Your responsibilities
             </h2>
@@ -112,7 +112,7 @@ export default function TermsPage() {
           <section aria-labelledby="third-party-heading" className="space-y-3">
             <h2
               id="third-party-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-xl font-semibold text-gray-900"
             >
               Third-party services and links
             </h2>
@@ -127,7 +127,7 @@ export default function TermsPage() {
           <section aria-labelledby="changes-heading" className="space-y-3">
             <h2
               id="changes-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-xl font-semibold text-gray-900"
             >
               Changes to these terms
             </h2>
@@ -141,7 +141,7 @@ export default function TermsPage() {
           <section aria-labelledby="termination-heading" className="space-y-3">
             <h2
               id="termination-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-xl font-semibold text-gray-900"
             >
               Termination
             </h2>
@@ -155,7 +155,7 @@ export default function TermsPage() {
           <section aria-labelledby="contact-heading" className="space-y-3">
             <h2
               id="contact-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-xl font-semibold text-gray-900"
             >
               Contact
             </h2>

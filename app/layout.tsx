@@ -3,18 +3,20 @@ import Link from "next/link"
 import { Geist_Mono, Inter, Playfair_Display } from "next/font/google"
 import "./globals.css"
 
-const inter = Inter({
-  variable: "--font-inter",
+const playfair = Playfair_Display({
   subsets: ["latin"],
+  variable: "--font-serif",
+  display: "swap",
+})
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
 })
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-})
-
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+  variable: "--font-mono",
   subsets: ["latin"],
 })
 
@@ -33,9 +35,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body
-        className={`${inter.variable} ${playfair.variable} ${geistMono.variable} font-sans antialiased bg-[#F7F7FB] text-[#1F2937]`}
+        className={`${geistMono.variable} font-sans antialiased bg-[#F7F7FB] text-[#1F2937]`}
       >
         <div className="min-h-screen flex flex-col">
           <header className="border-b border-gray-200/60 bg-[#F7F7FB]/80 backdrop-blur">
