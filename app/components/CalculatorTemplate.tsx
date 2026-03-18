@@ -431,71 +431,72 @@ export default function CalculatorTemplate({
   resolvedRelated = resolvedRelated.slice(0, 5)
 
   return (
-    <div className="min-h-screen bg-white px-4 py-10 text-gray-900">
+    <div className="min-h-screen bg-[#F7F7FB] -m-10 px-4 py-20 text-[#1F2937] sm:py-28">
       <div className="mx-auto max-w-2xl">
-        <div className="mx-auto max-w-xl rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
-          <h1 className="text-center text-3xl font-bold tracking-tight text-gray-900">
+        <div className="mx-auto max-w-xl rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
+          <h1 className="text-center font-serif text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl leading-[1.1]">
             {title}
           </h1>
 
-          <div className="mt-6 space-y-5">
-            {inputs.map((input) => {
-              const id = `${calculatorKey}-${input.key}`
-              const helperText =
-                input.helper ??
-                `Enter your ${input.label.toLowerCase()}`
+          <div className="mt-8 rounded-2xl bg-gradient-to-b from-[#F7F7FB] to-[#FFF7ED]/60 p-6 sm:p-7">
+            <div className="space-y-6">
+              {inputs.map((input) => {
+                const id = `${calculatorKey}-${input.key}`
+                const helperText =
+                  input.helper ?? `Enter your ${input.label.toLowerCase()}`
 
-              return (
-                <div key={input.key} className="space-y-1 text-left">
-                  <label
-                    htmlFor={id}
-                    className="block text-sm font-medium text-gray-800"
-                  >
-                    {input.label}
-                  </label>
-                  <input
-                    id={id}
-                    type="number"
-                    inputMode="decimal"
-                    placeholder={input.placeholder}
-                    className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400"
-                    value={values[input.key] ?? ""}
-                    onChange={(e) => handleChange(input.key, e.target.value)}
-                  />
-                  <p className="text-xs text-gray-500">{helperText}</p>
-                </div>
-              )
-            })}
+                return (
+                  <div key={input.key} className="space-y-1 text-left">
+                    <label
+                      htmlFor={id}
+                      className="block text-sm font-medium text-gray-800"
+                    >
+                      {input.label}
+                    </label>
+                    <input
+                      id={id}
+                      type="number"
+                      inputMode="decimal"
+                      placeholder={input.placeholder}
+                      className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 transition-all duration-200 focus:border-[#5B5FFF] focus:outline-none focus:ring-2 focus:ring-[#5B5FFF]/30"
+                      value={values[input.key] ?? ""}
+                      onChange={(e) => handleChange(input.key, e.target.value)}
+                    />
+                    <p className="text-xs text-gray-500">{helperText}</p>
+                  </div>
+                )
+              })}
+            </div>
           </div>
 
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
             <button
               type="button"
               onClick={handleCalculate}
-              className="inline-flex items-center justify-center rounded-full bg-black px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+              className="inline-flex items-center justify-center rounded-full bg-[#5B5FFF] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#4A4AE0] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5B5FFF] focus-visible:ring-offset-2"
             >
               Calculate
             </button>
             <button
               type="button"
               onClick={handleReset}
-              className="inline-flex items-center justify-center rounded-full border border-gray-300 bg-white px-6 py-2.5 text-sm font-medium text-gray-800 shadow-sm hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2"
+              className="inline-flex items-center justify-center rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-medium text-gray-800 shadow-sm transition-all duration-200 hover:bg-[#F7F7FB] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5B5FFF]/30 focus-visible:ring-offset-2"
             >
               Reset
             </button>
           </div>
 
           {result !== null && (
-            <div className="mt-6 rounded-xl bg-gray-50 px-4 py-5 text-center">
-              <div className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+            <div className="mt-8 rounded-2xl bg-gradient-to-b from-[#F0F2FF] to-[#FFF7ED]/70 px-6 py-6 text-center ring-1 ring-[#5B5FFF]/10 editorial-fade-in-up">
+              <div className="text-xs font-semibold uppercase tracking-widest text-gray-600">
                 Estimated Result
               </div>
-              <div className="mt-2 text-3xl font-semibold text-gray-900">
+              <div className="mt-3 text-5xl font-semibold tracking-tight text-[#5B5FFF] leading-[1.05]">
                 {calculatorLogic[calculatorKey]?.formatResult
                   ? calculatorLogic[calculatorKey]?.formatResult?.(result)
                   : `$${result.toFixed(2)}`}
               </div>
-              <p className="mt-2 text-xs text-gray-500">
+              <p className="mt-3 text-sm text-gray-600 leading-relaxed">
                 Estimated monthly earnings based on your inputs. Actual results
                 may vary.
               </p>
@@ -504,33 +505,45 @@ export default function CalculatorTemplate({
         </div>
       </div>
 
-      <section className="mx-auto mt-12 max-w-3xl space-y-6 text-left">
-        <h2 className="text-2xl font-bold">How This Calculator Works</h2>
-        <p>{howItWorks}</p>
+      <section className="mx-auto mt-16 max-w-3xl space-y-8 text-left">
+        <h2 className="font-serif text-3xl font-bold tracking-tight text-gray-900">
+          How This Calculator Works
+        </h2>
+        <p className="text-gray-700 leading-relaxed">{howItWorks}</p>
 
-        <h3 className="text-xl font-semibold">Example Calculation</h3>
-        <div className="bg-gray-100 p-4 rounded-lg">
+        <h3 className="font-serif text-2xl font-semibold tracking-tight text-gray-900">
+          Example Calculation
+        </h3>
+        <div className="rounded-xl border border-gray-200/70 bg-gradient-to-b from-[#F7F7FB] to-[#FFF7ED]/60 p-5 text-gray-800 leading-relaxed">
           {exampleCalculation}
         </div>
 
-        <h3 className="text-xl font-semibold">Formula</h3>
-        <div className="bg-gray-100 p-4 rounded-lg">
+        <h3 className="font-serif text-2xl font-semibold tracking-tight text-gray-900">
+          Formula
+        </h3>
+        <div className="rounded-xl border border-gray-200/70 bg-gradient-to-b from-[#F7F7FB] to-[#FFF7ED]/60 p-5 text-gray-800 leading-relaxed">
           {formula}
         </div>
 
-        <h3 className="text-xl font-semibold">Frequently Asked Questions</h3>
-        <div className="space-y-4">
+        <h3 className="font-serif text-2xl font-semibold tracking-tight text-gray-900">
+          Frequently Asked Questions
+        </h3>
+        <div className="space-y-6">
           {faq.map((item, i) => (
             <div key={i}>
-              <strong>{item.question}</strong>
-              <p>{item.answer}</p>
+              <strong className="font-medium text-gray-900">
+                {item.question}
+              </strong>
+              <p className="mt-2 text-gray-700 leading-relaxed">
+                {item.answer}
+              </p>
             </div>
           ))}
         </div>
       </section>
       {resolvedRelated.length > 0 && (
-        <section className="mx-auto mt-12 max-w-6xl px-0 text-left">
-          <h2 className="text-xl font-semibold mb-4 text-gray-900">
+        <section className="mx-auto mt-16 max-w-6xl px-0 text-left">
+          <h2 className="font-serif text-2xl font-semibold tracking-tight mb-4 text-gray-900">
             Related Calculators
           </h2>
           <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -538,13 +551,15 @@ export default function CalculatorTemplate({
               <li key={calc.path}>
                 <Link
                   href={calc.path}
-                  className="block h-full rounded-lg border border-gray-200 bg-white p-6 text-left transition-colors hover:border-gray-300 hover:bg-gray-50"
+                  className="block h-full rounded-2xl border border-gray-200 bg-white p-6 text-left shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.02]"
                 >
-                  <h3 className="font-semibold text-gray-900">{calc.name}</h3>
+                  <h3 className="font-serif font-semibold text-gray-900 text-lg tracking-tight">
+                    {calc.name}
+                  </h3>
                   <p className="mt-2 text-sm text-gray-600 leading-relaxed">
                     {calc.description}
                   </p>
-                  <span className="mt-3 inline-block text-sm font-medium text-gray-500 hover:text-gray-700">
+                  <span className="mt-4 inline-block text-sm font-medium text-gray-500 transition-colors hover:text-gray-700">
                     Calculate now →
                   </span>
                 </Link>

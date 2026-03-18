@@ -1,10 +1,10 @@
 export default function PrivacyPolicyPage() {
   return (
-    <main className="min-h-screen bg-white text-gray-900">
-      <section className="px-6 pt-16 pb-20 sm:pt-20 sm:pb-24">
-        <div className="mx-auto max-w-3xl space-y-8">
+    <main className="min-h-screen bg-[#F7F7FB] text-[#1F2937]">
+      <section className="px-6 pt-24 pb-28 sm:pt-28 sm:pb-32">
+        <div className="mx-auto max-w-3xl space-y-10">
           <header className="space-y-3">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <h1 className="font-serif text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl leading-[1.15]">
               Privacy Policy
             </h1>
             <p className="text-sm text-gray-500">
@@ -16,7 +16,7 @@ export default function PrivacyPolicyPage() {
           <section aria-labelledby="information-we-collect-heading" className="space-y-3">
             <h2
               id="information-we-collect-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-2xl font-semibold tracking-tight text-gray-900"
             >
               Information we collect
             </h2>
@@ -37,7 +37,7 @@ export default function PrivacyPolicyPage() {
           <section aria-labelledby="cookies-heading" className="space-y-3">
             <h2
               id="cookies-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-2xl font-semibold tracking-tight text-gray-900"
             >
               Cookies and similar technologies
             </h2>
@@ -55,7 +55,7 @@ export default function PrivacyPolicyPage() {
           <section aria-labelledby="analytics-heading" className="space-y-3">
             <h2
               id="analytics-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-2xl font-semibold tracking-tight text-gray-900"
             >
               Google Analytics
             </h2>
@@ -80,7 +80,7 @@ export default function PrivacyPolicyPage() {
           <section aria-labelledby="adsense-heading" className="space-y-3">
             <h2
               id="adsense-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-2xl font-semibold tracking-tight text-gray-900"
             >
               Google AdSense and advertising
             </h2>
@@ -101,7 +101,7 @@ export default function PrivacyPolicyPage() {
           <section aria-labelledby="information-use-heading" className="space-y-3">
             <h2
               id="information-use-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-2xl font-semibold tracking-tight text-gray-900"
             >
               How we use information
             </h2>
@@ -119,7 +119,7 @@ export default function PrivacyPolicyPage() {
           <section aria-labelledby="data-sharing-heading" className="space-y-3">
             <h2
               id="data-sharing-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-2xl font-semibold tracking-tight text-gray-900"
             >
               Data sharing and third parties
             </h2>
@@ -140,7 +140,7 @@ export default function PrivacyPolicyPage() {
           <section aria-labelledby="data-retention-heading" className="space-y-3">
             <h2
               id="data-retention-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-2xl font-semibold tracking-tight text-gray-900"
             >
               Data retention
             </h2>
@@ -154,7 +154,7 @@ export default function PrivacyPolicyPage() {
           <section aria-labelledby="your-choices-heading" className="space-y-3">
             <h2
               id="your-choices-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-2xl font-semibold tracking-tight text-gray-900"
             >
               Your choices
             </h2>
@@ -177,7 +177,7 @@ export default function PrivacyPolicyPage() {
           <section aria-labelledby="changes-heading" className="space-y-3">
             <h2
               id="changes-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-2xl font-semibold tracking-tight text-gray-900"
             >
               Changes to this policy
             </h2>
@@ -193,7 +193,7 @@ export default function PrivacyPolicyPage() {
           <section aria-labelledby="contact-heading" className="space-y-3">
             <h2
               id="contact-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-2xl font-semibold tracking-tight text-gray-900"
             >
               Contact
             </h2>

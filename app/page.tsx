@@ -22,13 +22,15 @@ function CalculatorCard({ calc }: { calc: Calculator }) {
     <li>
       <Link
         href={calc.path}
-        className="block h-full rounded-lg border border-gray-200 bg-white p-6 text-left transition-colors hover:border-gray-300 hover:bg-gray-50"
+        className="block h-full rounded-2xl border border-gray-200 bg-white p-6 text-left shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.02] hover:border-gray-200"
       >
-        <h2 className="font-semibold text-gray-900">{calc.name}</h2>
-        <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+        <h2 className="font-serif text-xl font-semibold tracking-tight text-gray-900">
+          {calc.name}
+        </h2>
+        <p className="mt-2 text-sm leading-relaxed text-gray-600">
           {calc.description}
         </p>
-        <span className="mt-3 inline-block text-sm font-medium text-gray-500 hover:text-gray-700">
+        <span className="mt-4 inline-block text-sm font-medium text-gray-500 transition-colors hover:text-gray-700">
           Calculate now →
         </span>
       </Link>
@@ -102,25 +104,25 @@ export default function Home() {
   )
 
   return (
-    <main className="min-h-screen bg-white text-gray-900">
+    <main className="min-h-screen bg-[#F7F7FB] text-[#1F2937]">
       {/* Hero */}
-      <section className="pt-16 pb-12 px-6 sm:pt-20 sm:pb-16">
-        <div className="max-w-2xl mx-auto text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#F7F7FB] via-[#F7F7FB] to-[#FFF7ED]/70 py-28 px-6 sm:px-8">
+        <div className="mx-auto max-w-2xl text-center">
+          <h1 className="font-serif text-6xl font-bold tracking-tight text-gray-900 leading-[1.05]">
             Creator Calculators
           </h1>
-          <p className="mt-4 text-gray-600 text-base sm:text-lg leading-relaxed">
-            Free Creator Calculators for Income, Engagement, and Growth
+          <p className="mt-5 text-gray-600 text-base sm:text-lg leading-relaxed">
+            Trusted estimates for income, engagement, and growth.
           </p>
           <p className="mt-3 text-gray-600 text-sm sm:text-base leading-relaxed">
-            Estimate how much you can earn on YouTube, TikTok, Instagram, and more using these free creator tools. Calculate revenue, engagement rates, brand deals, and growth potential in seconds.
+            Calm, editorial tools for creators and marketers—built to help you plan with clarity across YouTube, TikTok, Instagram, and more.
           </p>
         </div>
       </section>
 
       {/* Search */}
-      <section className="px-6 pb-6">
-        <div className="max-w-2xl mx-auto">
+      <section className="px-6 pb-12 sm:pb-16">
+        <div className="mx-auto max-w-2xl">
           <label htmlFor="search" className="sr-only">
             Search calculators
           </label>
@@ -130,17 +132,17 @@ export default function Home() {
             placeholder="Search calculators..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 shadow-sm focus:border-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400"
+            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 shadow-sm transition-all duration-200 focus:border-[#5B5FFF] focus:outline-none focus:ring-2 focus:ring-[#5B5FFF]/30"
             aria-label="Search calculators by name or description"
           />
         </div>
       </section>
 
       {/* Popular Calculators */}
-      <section className="px-6 pb-10">
+      <section className="px-6 pb-20">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-4 flex items-center justify-between gap-2">
-            <h2 className="text-lg font-semibold text-gray-900">
+          <div className="mb-8 flex items-center justify-between gap-2">
+            <h2 className="font-serif text-2xl font-semibold tracking-tight text-gray-900">
               Popular Calculators
             </h2>
           </div>
@@ -163,16 +165,16 @@ export default function Home() {
       </section>
 
       {/* Category sections */}
-      <section className="px-6 pb-20">
+      <section className="px-6 pb-28">
         <div className="mx-auto max-w-6xl space-y-14">
           {filteredCalculators.length === 0 ? (
-            <p className="text-center text-gray-500 py-12">
+            <p className="py-12 text-center text-gray-500">
               No calculators match &quot;{search}&quot;. Try a different search.
             </p>
           ) : (
             Array.from(byCategory.entries()).map(([category, calcs]) => (
               <div key={category}>
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                <h2 className="font-serif text-2xl font-semibold tracking-tight text-gray-900 mb-4">
                   {category}
                 </h2>
                 <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -187,12 +189,12 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="px-6 pb-16">
+      <section className="px-6 pb-20">
         <div className="mx-auto max-w-3xl">
-          <h2 className="text-lg font-semibold text-gray-900 text-center sm:text-left">
+          <h2 className="font-serif text-2xl font-semibold tracking-tight text-gray-900 text-center sm:text-left">
             Frequently Asked Questions
           </h2>
-          <div className="mt-6 space-y-6 text-sm sm:text-base text-gray-700">
+          <div className="mt-10 space-y-8 text-sm sm:text-base text-gray-700">
             <div>
               <h3 className="font-medium text-gray-900">
                 How do creator calculators work?

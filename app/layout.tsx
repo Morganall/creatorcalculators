@@ -1,15 +1,20 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Geist_Mono, Inter, Playfair_Display } from "next/font/google"
 import "./globals.css"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 })
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+})
+
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
 })
 
@@ -30,14 +35,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900`}
+        className={`${inter.variable} ${playfair.variable} ${geistMono.variable} font-sans antialiased bg-[#F7F7FB] text-[#1F2937]`}
       >
         <div className="min-h-screen flex flex-col">
-          <header className="border-b border-gray-100 bg-white">
+          <header className="border-b border-gray-200/60 bg-[#F7F7FB]/80 backdrop-blur">
             <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
               <Link
                 href="/"
-                className="text-base font-semibold tracking-tight text-gray-900 sm:text-lg"
+                className="font-semibold tracking-tight text-gray-900 sm:text-lg"
               >
                 CreatorCalculators
               </Link>
@@ -46,7 +51,7 @@ export default function RootLayout({
                   <li>
                     <Link
                       href="/"
-                      className="text-gray-700 hover:text-gray-900"
+                      className="text-gray-600 hover:text-gray-900 transition-colors"
                     >
                       Home
                     </Link>
@@ -54,7 +59,7 @@ export default function RootLayout({
                   <li>
                     <Link
                       href="/about"
-                      className="text-gray-700 hover:text-gray-900"
+                      className="text-gray-600 hover:text-gray-900 transition-colors"
                     >
                       About
                     </Link>
@@ -68,7 +73,7 @@ export default function RootLayout({
             {children}
           </main>
 
-          <footer className="border-t border-gray-100 bg-white">
+          <footer className="border-t border-gray-200/60 bg-[#F7F7FB]/80 backdrop-blur">
             <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6 text-sm text-gray-500 sm:flex-row sm:items-center sm:justify-between sm:px-6">
               <p className="text-xs sm:text-sm">
                 © {new Date().getFullYear()} CreatorCalculators.com
@@ -78,7 +83,7 @@ export default function RootLayout({
                   <li>
                     <Link
                       href="/about"
-                      className="hover:text-gray-700"
+                      className="hover:text-gray-700 transition-colors"
                     >
                       About
                     </Link>
@@ -86,7 +91,7 @@ export default function RootLayout({
                   <li>
                     <Link
                       href="/contact"
-                      className="hover:text-gray-700"
+                      className="hover:text-gray-700 transition-colors"
                     >
                       Contact
                     </Link>
@@ -94,7 +99,7 @@ export default function RootLayout({
                   <li>
                     <Link
                       href="/privacy-policy"
-                      className="hover:text-gray-700"
+                      className="hover:text-gray-700 transition-colors"
                     >
                       Privacy Policy
                     </Link>
@@ -102,7 +107,7 @@ export default function RootLayout({
                   <li>
                     <Link
                       href="/terms"
-                      className="hover:text-gray-700"
+                      className="hover:text-gray-700 transition-colors"
                     >
                       Terms
                     </Link>

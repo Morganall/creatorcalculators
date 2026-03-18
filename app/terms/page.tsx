@@ -1,8 +1,8 @@
 export default function TermsPage() {
   return (
-    <main className="min-h-screen bg-white text-gray-900">
-      <section className="px-6 pt-16 pb-20 sm:pt-20 sm:pb-24">
-        <div className="mx-auto max-w-3xl space-y-8">
+    <main className="min-h-screen bg-[#F7F7FB] text-[#1F2937]">
+      <section className="px-6 pt-24 pb-28 sm:pt-28 sm:pb-32">
+        <div className="mx-auto max-w-3xl space-y-10">
           <header className="space-y-3">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               Terms of Use

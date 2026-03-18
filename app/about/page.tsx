@@ -1,10 +1,10 @@
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-white text-gray-900">
-      <section className="px-6 pt-16 pb-20 sm:pt-20 sm:pb-24">
-        <div className="mx-auto max-w-3xl space-y-6">
+    <main className="min-h-screen bg-[#F7F7FB] text-[#1F2937]">
+      <section className="px-6 pt-24 pb-28 sm:pt-28 sm:pb-32">
+        <div className="mx-auto max-w-3xl space-y-8">
           <header>
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <h1 className="font-serif text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl leading-[1.15]">
               About Creator Calculators
             </h1>
           </header>
@@ -26,7 +26,7 @@ export default function AboutPage() {
           <section aria-labelledby="how-we-work-heading" className="space-y-3">
             <h2
               id="how-we-work-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-2xl font-semibold tracking-tight text-gray-900"
             >
               Educational estimates, not guarantees
             </h2>
@@ -47,7 +47,7 @@ export default function AboutPage() {
           <section aria-labelledby="mission-heading" className="space-y-3">
             <h2
               id="mission-heading"
-              className="text-xl font-semibold text-gray-900"
+              className="font-serif text-2xl font-semibold tracking-tight text-gray-900"
             >
               Our mission
             </h2>
