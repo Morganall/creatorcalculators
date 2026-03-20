@@ -209,4 +209,98 @@ export const calculators: Calculator[] = [
     description: "Calculate Instagram follower growth rate over time.",
     category: "Growth Calculators",
   },
+  {
+    name: "OnlyFans Earnings Calculator",
+    path: "/onlyfans-earnings-calculator",
+    description:
+      "Estimate OnlyFans earnings based on subscribers, subscription price, and tips.",
+    category: "Creator Monetization Calculators",
+  },
+  {
+    name: "Influencer Payment Calculator",
+    path: "/influencer-payment-calculator",
+    description:
+      "Estimate influencer payments based on followers, engagement rate, and price per engagement.",
+    category: "Influencer Marketing Calculators",
+  },
+  {
+    name: "Social Media Value Calculator",
+    path: "/social-media-value-calculator",
+    description:
+      "Estimate social media value using followers, engagement rate, and a payout multiplier.",
+    category: "Influencer Marketing Calculators",
+  },
+  {
+    name: "Blog Earnings Calculator",
+    path: "/blog-earnings-calculator",
+    description:
+      "Estimate blog earnings based on monthly views and RPM (revenue per 1,000 views).",
+    category: "Creator Monetization Calculators",
+  },
+  {
+    name: "YouTube Money Calculator",
+    path: "/youtube-money-calculator",
+    description: "Estimate YouTube earnings from views and CPM.",
+    category: "YouTube Calculators",
+  },
+  {
+    name: "Instagram Money Calculator",
+    path: "/instagram-money-calculator",
+    description:
+      "Estimate Instagram earnings based on followers, engagement rate, and rate per post.",
+    category: "Instagram Calculators",
+  },
+  {
+    name: "Influencer Money Calculator",
+    path: "/influencer-money-calculator",
+    description:
+      "Estimate influencer earnings using followers, engagement, rate per engagement, and posts per month.",
+    category: "Influencer Marketing Calculators",
+  },
+  {
+    name: "TikTok Money Per 1,000 Views",
+    path: "/tiktok-money-per-1000-views",
+    description: "Estimate TikTok earnings from views and RPM ($ per 1,000 views).",
+    category: "TikTok Calculators",
+  },
+  {
+    name: "YouTube Money Per 1,000 Views",
+    path: "/youtube-money-per-1000-views",
+    description: "Estimate YouTube earnings from views and CPM ($ per 1,000 views).",
+    category: "YouTube Calculators",
+  },
+  {
+    name: "How Much Can I Earn With X Followers",
+    path: "/how-much-can-i-earn-with-x-followers",
+    description:
+      "Estimate your earnings with a follower count using engagement rate and payout per engagement.",
+    category: "Influencer Marketing Calculators",
+  },
+  {
+    name: "1 Million Views Calculator",
+    path: "/1-million-views-calculator",
+    description: "Calculate how much 1,000,000 views earns using CPM/RPM.",
+    category: "Creator Monetization Calculators",
+  },
+  {
+    name: "TikTok Follower Earnings Calculator",
+    path: "/tiktok-follower-earnings-calculator",
+    description:
+      "Estimate TikTok earnings from followers using engagement and earnings per engaged follower.",
+    category: "TikTok Calculators",
+  },
+  {
+    name: "YouTube Subscriber Earnings Calculator",
+    path: "/youtube-subscriber-earnings-calculator",
+    description:
+      "Estimate YouTube subscriber earnings using monthly revenue per subscriber.",
+    category: "YouTube Calculators",
+  },
+  {
+    name: "Viral Video Earnings Calculator",
+    path: "/viral-video-earnings-calculator",
+    description:
+      "Estimate earnings for viral videos across TikTok, YouTube, and Instagram using views and CPM/RPM.",
+    category: "Creator Monetization Calculators",
+  },
 ]

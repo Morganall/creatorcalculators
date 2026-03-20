@@ -42,6 +42,20 @@ type CalculatorKey =
   | "/influencer-rate-calculator"
   | "/tiktok-engagement-calculator"
   | "/instagram-engagement-calculator"
+  | "/onlyfans-earnings-calculator"
+  | "/influencer-payment-calculator"
+  | "/social-media-value-calculator"
+  | "/blog-earnings-calculator"
+  | "/youtube-money-calculator"
+  | "/instagram-money-calculator"
+  | "/influencer-money-calculator"
+  | "/tiktok-money-per-1000-views"
+  | "/youtube-money-per-1000-views"
+  | "/how-much-can-i-earn-with-x-followers"
+  | "/1-million-views-calculator"
+  | "/tiktok-follower-earnings-calculator"
+  | "/youtube-subscriber-earnings-calculator"
+  | "/viral-video-earnings-calculator"
 
 type CalculatorLogic = {
   calculate: (values: CalculatorValues) => number
@@ -53,6 +67,8 @@ type CalculatorInputConfig = {
   key: string
   placeholder: string
   helper?: string
+  type?: "number" | "select"
+  options?: Array<{ label: string; value: string }>
 }
 
 const calculatorLogic: Record<CalculatorKey, CalculatorLogic> = {
@@ -281,6 +297,113 @@ const calculatorLogic: Record<CalculatorKey, CalculatorLogic> = {
     },
     formatResult: (n) => `${n.toFixed(2)}%`,
   },
+  "/onlyfans-earnings-calculator": {
+    calculate: (v) => {
+      const subscribers = v.subscribers || 0
+      const price = v.price || 0
+      const tipsPct = v.tips_percentage || 0
+      return subscribers * price + subscribers * price * (tipsPct / 100)
+    },
+  },
+  "/influencer-payment-calculator": {
+    calculate: (v) => {
+      const followers = v.followers || 0
+      const engagementPct = (v.engagement_rate || 0) / 100
+      const pricePerEngagement = v.price_per_engagement || 0
+      return followers * engagementPct * pricePerEngagement
+    },
+  },
+  "/social-media-value-calculator": {
+    calculate: (v) => {
+      const followers = v.followers || 0
+      const engagementPct = (v.engagement_rate || 0) / 100
+      const platformMultiplier = v.platform_multiplier || 0
+      return followers * engagementPct * platformMultiplier
+    },
+  },
+  "/blog-earnings-calculator": {
+    calculate: (v) => {
+      const views = v.views || 0
+      const rpm = v.rpm || 0
+      return (views / 1000) * rpm
+    },
+  },
+  "/youtube-money-calculator": {
+    calculate: (v) => {
+      const views = v.views || 0
+      const cpm = v.cpm || 0
+      return (views / 1000) * cpm
+    },
+  },
+  "/instagram-money-calculator": {
+    calculate: (v) => {
+      const followers = v.followers || 0
+      const engagementPct = (v.engagement_rate || 0) / 100
+      const ratePerPost = v.rate_per_post || 0
+      return followers * engagementPct * ratePerPost
+    },
+  },
+  "/influencer-money-calculator": {
+    calculate: (v) => {
+      const followers = v.followers || 0
+      const engagementPct = (v.engagement_rate || 0) / 100
+      const pricePerEngagement = v.price_per_engagement || 0
+      const postsPerMonth = v.posts_per_month || 0
+      return followers * engagementPct * pricePerEngagement * postsPerMonth
+    },
+  },
+  "/tiktok-money-per-1000-views": {
+    calculate: (v) => {
+      const views = v.views || 0
+      const rpm = v.rpm || 0
+      return (views / 1000) * rpm
+    },
+  },
+  "/youtube-money-per-1000-views": {
+    calculate: (v) => {
+      const views = v.views || 0
+      const cpm = v.cpm || 0
+      return (views / 1000) * cpm
+    },
+  },
+  "/how-much-can-i-earn-with-x-followers": {
+    calculate: (v) => {
+      const followers = v.followers || 0
+      const engagementPct = (v.engagement_rate || 0) / 100
+      const earningsPer1000Engaged = v.earnings_per_1000_engaged || 0
+      const engaged = followers * engagementPct
+      return (engaged / 1000) * earningsPer1000Engaged
+    },
+  },
+  "/1-million-views-calculator": {
+    calculate: (v) => {
+      const payoutPer1000 = v.payout_per_1000 || 0
+      return (1000000 / 1000) * payoutPer1000
+    },
+  },
+  "/tiktok-follower-earnings-calculator": {
+    calculate: (v) => {
+      const followers = v.followers || 0
+      const engagementPct = (v.engagement_rate || 0) / 100
+      const earningsPerEngagedFollower = v.earnings_per_engaged_follower || 0
+      return followers * engagementPct * earningsPerEngagedFollower
+    },
+  },
+  "/youtube-subscriber-earnings-calculator": {
+    calculate: (v) => {
+      const subscribers = v.subscribers || 0
+      const revenuePerSubscriber = v.revenue_per_subscriber || 0
+      return subscribers * revenuePerSubscriber
+    },
+  },
+  "/viral-video-earnings-calculator": {
+    calculate: (v) => {
+      // Platform selection only helps label RPM/CPM; payout math is the same.
+      const views = v.views || 0
+      const payoutPer1000 = v.payout_per_1000 || 0
+      return (views / 1000) * payoutPer1000
+    },
+  },
 }
 
 function getDefaultValues(
@@ -332,6 +455,8 @@ export type CalculatorTemplateProps = {
   inputs: CalculatorInputConfig[]
   /** Identifier used to select calculation logic inside this component */
   calculatorKey: CalculatorKey
+  autoCalculate?: boolean
+  intro?: string
   howItWorks?: string
   exampleCalculation?: string
   formula?: string
@@ -352,6 +477,8 @@ export default function CalculatorTemplate({
   title,
   inputs,
   calculatorKey,
+  autoCalculate = false,
+  intro,
   howItWorks = defaultHowItWorks,
   exampleCalculation = defaultExample,
   formula = defaultFormula,
@@ -381,6 +508,16 @@ export default function CalculatorTemplate({
       setResult(output)
     }
   }, [calculatorKey, inputs])
+
+  useEffect(() => {
+    if (!autoCalculate) return
+    const output = calculateResult(calculatorKey, values)
+    if (output !== null) {
+      setResult(output)
+    } else {
+      setResult(null)
+    }
+  }, [autoCalculate, calculatorKey, values])
 
   function handleChange(key: string, value: string) {
     setValues({
@@ -441,7 +578,17 @@ export default function CalculatorTemplate({
             {title}
           </h1>
 
-          <div className="mt-8 rounded-2xl bg-gradient-to-b from-[#F7F7FB] to-[#FFF7ED]/60 p-6 sm:p-7">
+          {intro ? (
+            <p className="mt-4 text-center text-gray-700 leading-relaxed">
+              {intro}
+            </p>
+          ) : null}
+
+          <div
+            className={`${
+              intro ? "mt-6" : "mt-8"
+            } rounded-2xl bg-gradient-to-b from-[#F7F7FB] to-[#FFF7ED]/60 p-6 sm:p-7`}
+          >
             <div className="space-y-6">
               {inputs.map((input) => {
                 const id = `${calculatorKey}-${input.key}`
@@ -456,15 +603,33 @@ export default function CalculatorTemplate({
                     >
                       {input.label}
                     </label>
-                    <input
-                      id={id}
-                      type="number"
-                      inputMode="decimal"
-                      placeholder={input.placeholder}
-                      className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 transition-all duration-200 focus:border-[#5B5FFF] focus:outline-none focus:ring-2 focus:ring-[#5B5FFF]/30"
-                      value={values[input.key] ?? ""}
-                      onChange={(e) => handleChange(input.key, e.target.value)}
-                    />
+                    {input.type === "select" && input.options && input.options.length > 0 ? (
+                      <select
+                        id={id}
+                        value={values[input.key] ?? ""}
+                        onChange={(e) => handleChange(input.key, e.target.value)}
+                        className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 transition-all duration-200 focus:border-[#5B5FFF] focus:outline-none focus:ring-2 focus:ring-[#5B5FFF]/30"
+                      >
+                        <option value="" disabled>
+                          {input.placeholder || "Select an option"}
+                        </option>
+                        {input.options.map((opt) => (
+                          <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        id={id}
+                        type="number"
+                        inputMode="decimal"
+                        placeholder={input.placeholder}
+                        className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 transition-all duration-200 focus:border-[#5B5FFF] focus:outline-none focus:ring-2 focus:ring-[#5B5FFF]/30"
+                        value={values[input.key] ?? ""}
+                        onChange={(e) => handleChange(input.key, e.target.value)}
+                      />
+                    )}
                     <p className="text-xs text-gray-500">{helperText}</p>
                   </div>
                 )
@@ -500,8 +665,8 @@ export default function CalculatorTemplate({
                   : `$${result.toFixed(2)}`}
               </div>
               <p className="mt-3 text-sm text-gray-600 leading-relaxed">
-                Estimated monthly earnings based on your inputs. Actual results
-                may vary.
+                Estimated earnings based on your inputs. Actual results may
+                vary.
               </p>
             </div>
           )}
@@ -529,7 +694,7 @@ export default function CalculatorTemplate({
         </div>
 
         <h3 className="font-serif text-xl font-semibold tracking-tight text-gray-900 sm:text-2xl">
-          Frequently Asked Questions
+          FAQs
         </h3>
         <div className="space-y-6">
           {faq.map((item, i) => (
@@ -547,7 +712,7 @@ export default function CalculatorTemplate({
       {resolvedRelated.length > 0 && (
         <section className="mx-auto mt-16 max-w-6xl px-4 sm:px-6 text-left">
           <h2 className="font-serif text-xl font-semibold tracking-tight mb-4 text-gray-900 sm:text-2xl">
-            Related Calculators
+            Explore More Creator Calculators
           </h2>
           <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {resolvedRelated.map((calc) => (
