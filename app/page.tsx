@@ -185,6 +185,9 @@ export default function Home() {
           </div>
           <ul className="grid gap-6 sm:grid-cols-2">
             {[
+              "TikTok Account Worth Calculator",
+              "YouTube Channel Worth Calculator",
+              "Influencer Value Calculator",
               "TikTok Money Calculator",
               "YouTube Revenue Calculator",
               "Instagram Earnings Calculator",

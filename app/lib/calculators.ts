@@ -303,4 +303,25 @@ export const calculators: Calculator[] = [
       "Estimate earnings for viral videos across TikTok, YouTube, and Instagram using views and CPM/RPM.",
     category: "Creator Monetization Calculators",
   },
+  {
+    name: "TikTok Account Worth Calculator",
+    path: "/tiktok-account-worth-calculator",
+    description:
+      "Estimate TikTok account value using followers, engagement rate, average views, and a niche multiplier.",
+    category: "TikTok Calculators",
+  },
+  {
+    name: "YouTube Channel Worth Calculator",
+    path: "/youtube-channel-worth-calculator",
+    description:
+      "Estimate YouTube channel value using monthly views and CPM to calculate estimated annual revenue.",
+    category: "YouTube Calculators",
+  },
+  {
+    name: "Influencer Value Calculator",
+    path: "/influencer-value-calculator",
+    description:
+      "Estimate influencer value using followers, engagement rate, platform multiplier, and posts per month.",
+    category: "Influencer Marketing Calculators",
+  },
 ]

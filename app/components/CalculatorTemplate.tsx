@@ -9,6 +9,102 @@ import {
 
 type CalculatorValues = Record<string, number>
 
+function sanitizeToRawNumber(input: string): string {
+  // Accept user typing with commas, currency symbols, and percent symbols.
+  // Store a raw numeric string internally (no commas, no $/%).
+  const cleaned = input.replace(/[$,%\s]/g, "").trim()
+  if (!cleaned) return ""
+
+  const negative = cleaned.startsWith("-")
+  // Keep digits and dots only; remove any other characters.
+  const digitsAndDotsOnly = cleaned.replace(/[^0-9.]/g, "")
+  if (!digitsAndDotsOnly) return ""
+
+  const firstDotIndex = digitsAndDotsOnly.indexOf(".")
+  if (firstDotIndex === -1) return `${negative ? "-" : ""}${digitsAndDotsOnly}`
+
+  const intPart = digitsAndDotsOnly.slice(0, firstDotIndex)
+  const fracPart = digitsAndDotsOnly.slice(firstDotIndex + 1).replace(/\./g, "")
+  return `${negative ? "-" : ""}${intPart}.${fracPart}`
+}
+
+function parseRawNumber(raw: string): number {
+  // Treat empty/incomplete inputs as 0 so calculators never hit NaN.
+  if (!raw) return 0
+  if (raw === "-" || raw === "." || raw === "-.") return 0
+  const n = parseFloat(raw)
+  return Number.isFinite(n) && !Number.isNaN(n) ? n : 0
+}
+
+function formatRawNumberWithCommas(raw: string): string {
+  if (!raw) return ""
+  if (raw === "-") return ""
+
+  const negative = raw.startsWith("-")
+  const unsigned = negative ? raw.slice(1) : raw
+
+  if (unsigned.includes(".")) {
+    const [intPartRaw, fracPartRaw = ""] = unsigned.split(".", 2)
+    const intPart = intPartRaw === "" ? "0" : Number(intPartRaw).toLocaleString(
+      "en-US",
+    )
+    return `${negative ? "-" : ""}${intPart}.${fracPartRaw}`
+  }
+
+  const intPart = unsigned === "" ? "" : Number(unsigned).toLocaleString("en-US")
+  return `${negative ? "-" : ""}${intPart}`
+}
+
+function formatUsd(value: number): string {
+  return value.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
+}
+
+function formatFixed(value: number, fractionDigits: number): string {
+  return value.toLocaleString("en-US", {
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  })
+}
+
+function formatPercent(value: number, fractionDigits: number): string {
+  return `${formatFixed(value, fractionDigits)}%`
+}
+
+function isPercentInputKey(key: string) {
+  return (
+    key === "engagement_rate" ||
+    key === "engagement" ||
+    key === "conversion_rate" ||
+    key === "conv_rate" ||
+    key === "tips_percentage"
+  )
+}
+
+function isMoneyInputKey(key: string) {
+  // These are generally CPM/RPM, prices, and currency-like inputs.
+  return (
+    key === "cpm" ||
+    key === "rpm" ||
+    key === "price" ||
+    key === "cost" ||
+    key === "fee" ||
+    key === "commission" ||
+    key === "revenue" ||
+    key === "rate" ||
+    key === "rate_per_post" ||
+    key === "rate_per_engagement" ||
+    key === "rate_per_k" ||
+    key.includes("price_per_") ||
+    key.includes("revenue_per_") ||
+    key.includes("payout")
+  )
+}
+
 type CalculatorKey =
   | "/tiktok-money-calculator"
   | "/youtube-revenue-calculator"
@@ -56,6 +152,9 @@ type CalculatorKey =
   | "/tiktok-follower-earnings-calculator"
   | "/youtube-subscriber-earnings-calculator"
   | "/viral-video-earnings-calculator"
+  | "/tiktok-account-worth-calculator"
+  | "/youtube-channel-worth-calculator"
+  | "/influencer-value-calculator"
 
 type CalculatorLogic = {
   calculate: (values: CalculatorValues) => number
@@ -92,7 +191,7 @@ const calculatorLogic: Record<CalculatorKey, CalculatorLogic> = {
       const views = v.views || 0
       return views === 0 ? 0 : (rev / views) * 1000
     },
-    formatResult: (n) => `$${n.toFixed(2)} CPM`,
+    formatResult: (n) => `${formatUsd(n)} CPM`,
   },
   "/youtube-channel-revenue-calculator": {
     calculate: (v) => ((v.views || 0) / 1000) * (v.cpm || 0),
@@ -106,7 +205,7 @@ const calculatorLogic: Record<CalculatorKey, CalculatorLogic> = {
       const revenue = v.revenue || 0
       return cost === 0 ? 0 : ((revenue - cost) / cost) * 100
     },
-    formatResult: (n) => `${n.toFixed(2)}%`,
+    formatResult: (n) => formatPercent(n, 2),
   },
   "/newsletter-subscriber-value-calculator": {
     calculate: (v) => {
@@ -156,7 +255,7 @@ const calculatorLogic: Record<CalculatorKey, CalculatorLogic> = {
       if (days <= 0) return 0
       return (end - start) / days
     },
-    formatResult: (n) => `${n.toFixed(2)} followers/day`,
+    formatResult: (n) => `${formatFixed(n, 2)} followers/day`,
   },
   "/tiktok-engagement-value-calculator": {
     calculate: (v) => {
@@ -175,7 +274,7 @@ const calculatorLogic: Record<CalculatorKey, CalculatorLogic> = {
       if (days <= 0) return 0
       return (end - start) / days
     },
-    formatResult: (n) => `${n.toFixed(2)} subs/day`,
+    formatResult: (n) => `${formatFixed(n, 2)} subs/day`,
   },
   "/social-media-growth-rate-calculator": {
     calculate: (v) => {
@@ -186,7 +285,7 @@ const calculatorLogic: Record<CalculatorKey, CalculatorLogic> = {
       const growthRate = ((end - start) / start) * 100
       return growthRate / days
     },
-    formatResult: (n) => `${n.toFixed(2)}% per day`,
+    formatResult: (n) => `${formatFixed(n, 2)}% per day`,
   },
   "/influencer-campaign-roi-calculator": {
     calculate: (v) => {
@@ -194,7 +293,7 @@ const calculatorLogic: Record<CalculatorKey, CalculatorLogic> = {
       const revenue = v.revenue || 0
       return cost === 0 ? 0 : ((revenue - cost) / cost) * 100
     },
-    formatResult: (n) => `${n.toFixed(2)}%`,
+    formatResult: (n) => formatPercent(n, 2),
   },
   "/instagram-earnings-calculator": {
     calculate: (v) => {
@@ -285,7 +384,7 @@ const calculatorLogic: Record<CalculatorKey, CalculatorLogic> = {
       if (views === 0) return 0
       return ((likes + comments + shares) / views) * 100
     },
-    formatResult: (n) => `${n.toFixed(2)}%`,
+    formatResult: (n) => formatPercent(n, 2),
   },
   "/instagram-engagement-calculator": {
     calculate: (values) => {
@@ -295,7 +394,7 @@ const calculatorLogic: Record<CalculatorKey, CalculatorLogic> = {
       if (followers === 0) return 0
       return ((likes + comments) / followers) * 100
     },
-    formatResult: (n) => `${n.toFixed(2)}%`,
+    formatResult: (n) => formatPercent(n, 2),
   },
   "/onlyfans-earnings-calculator": {
     calculate: (v) => {
@@ -404,6 +503,30 @@ const calculatorLogic: Record<CalculatorKey, CalculatorLogic> = {
       return (views / 1000) * payoutPer1000
     },
   },
+  "/tiktok-account-worth-calculator": {
+    calculate: (v) => {
+      const followers = v.followers || 0
+      const engagementRate = v.engagement_rate || 0
+      const nicheMultiplier = v.niche_multiplier || 0
+      return followers * engagementRate * nicheMultiplier * 0.1
+    },
+  },
+  "/youtube-channel-worth-calculator": {
+    calculate: (v) => {
+      const monthlyViews = v.monthly_views || 0
+      const cpm = v.cpm || 0
+      return (monthlyViews / 1000 * cpm) * 12
+    },
+  },
+  "/influencer-value-calculator": {
+    calculate: (v) => {
+      const followers = v.followers || 0
+      const engagementRate = v.engagement_rate || 0
+      const platformMultiplier = v.platform_multiplier || 0
+      const posts = v.posts || 0
+      return followers * engagementRate * platformMultiplier * posts
+    },
+  },
 }
 
 function getDefaultValues(
@@ -425,6 +548,31 @@ function getDefaultValues(
       continue
     }
 
+    if (key === "average_views") {
+      defaults[key] = "200000"
+      continue
+    }
+
+    if (key === "monthly_views") {
+      defaults[key] = "250000"
+      continue
+    }
+
+    if (key === "cpm") {
+      defaults[key] = "5"
+      continue
+    }
+
+    if (key === "niche_multiplier") {
+      defaults[key] = "1"
+      continue
+    }
+
+    if (key === "platform_multiplier") {
+      defaults[key] = "1.2"
+      continue
+    }
+
     if (key === "posts" || key === "posts_per_month") {
       defaults[key] = "4"
       continue
@@ -443,8 +591,7 @@ function calculateResult(
 
   const numericValues: CalculatorValues = {}
   for (const [key, value] of Object.entries(values)) {
-    const parsed = parseFloat(value)
-    numericValues[key] = Number.isNaN(parsed) ? 0 : parsed
+    numericValues[key] = parseRawNumber(sanitizeToRawNumber(value))
   }
 
   return logic.calculate(numericValues)
@@ -460,6 +607,7 @@ export type CalculatorTemplateProps = {
   howItWorks?: string
   exampleCalculation?: string
   formula?: string
+  resultLabel?: string
   faq?: { question: string; answer: string }[]
   relatedCalculators?: { name: string; path: string }[]
 }
@@ -482,6 +630,7 @@ export default function CalculatorTemplate({
   howItWorks = defaultHowItWorks,
   exampleCalculation = defaultExample,
   formula = defaultFormula,
+  resultLabel = "Estimated Result",
   faq = defaultFaq,
   relatedCalculators = defaultRelated,
 }: CalculatorTemplateProps) {
@@ -513,16 +662,19 @@ export default function CalculatorTemplate({
     if (!autoCalculate) return
     const output = calculateResult(calculatorKey, values)
     if (output !== null) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setResult(output)
     } else {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setResult(null)
     }
   }, [autoCalculate, calculatorKey, values])
 
   function handleChange(key: string, value: string) {
+    const raw = sanitizeToRawNumber(value)
     setValues({
       ...values,
-      [key]: value,
+      [key]: raw,
     })
   }
 
@@ -595,6 +747,15 @@ export default function CalculatorTemplate({
                 const helperText =
                   input.helper ?? `Enter your ${input.label.toLowerCase()}`
 
+                const rawValue = values[input.key] ?? ""
+                const displayedValue = (() => {
+                  if (!rawValue) return ""
+                  const base = formatRawNumberWithCommas(rawValue)
+                  if (isPercentInputKey(input.key)) return `${base}%`
+                  if (isMoneyInputKey(input.key)) return `$${base}`
+                  return base
+                })()
+
                 return (
                   <div key={input.key} className="space-y-1 text-left">
                     <label
@@ -622,11 +783,11 @@ export default function CalculatorTemplate({
                     ) : (
                       <input
                         id={id}
-                        type="number"
+                        type="text"
                         inputMode="decimal"
                         placeholder={input.placeholder}
                         className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 transition-all duration-200 focus:border-[#5B5FFF] focus:outline-none focus:ring-2 focus:ring-[#5B5FFF]/30"
-                        value={values[input.key] ?? ""}
+                        value={displayedValue}
                         onChange={(e) => handleChange(input.key, e.target.value)}
                       />
                     )}
@@ -657,12 +818,12 @@ export default function CalculatorTemplate({
           {result !== null && (
             <div className="mt-8 rounded-2xl bg-gradient-to-b from-[#F0F2FF] to-[#FFF7ED]/70 px-6 py-6 text-center ring-1 ring-[#5B5FFF]/10 editorial-fade-in-up">
               <div className="text-sm font-semibold uppercase tracking-widest text-gray-600">
-                Estimated Result
+                {resultLabel}
               </div>
               <div className="mt-3 text-4xl font-semibold tracking-tight text-[#5B5FFF] leading-[1.05] sm:text-5xl">
                 {calculatorLogic[calculatorKey]?.formatResult
                   ? calculatorLogic[calculatorKey]?.formatResult?.(result)
-                  : `$${result.toFixed(2)}`}
+                  : formatUsd(result)}
               </div>
               <p className="mt-3 text-sm text-gray-600 leading-relaxed">
                 Estimated earnings based on your inputs. Actual results may
@@ -712,7 +873,7 @@ export default function CalculatorTemplate({
       {resolvedRelated.length > 0 && (
         <section className="mx-auto mt-16 max-w-6xl px-4 sm:px-6 text-left">
           <h2 className="font-serif text-xl font-semibold tracking-tight mb-4 text-gray-900 sm:text-2xl">
-            Explore More Creator Calculators
+            Related Calculators: Explore More Creator Calculators
           </h2>
           <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {resolvedRelated.map((calc) => (
