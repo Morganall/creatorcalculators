@@ -324,4 +324,39 @@ export const calculators: Calculator[] = [
       "Estimate influencer value using followers, engagement rate, platform multiplier, and posts per month.",
     category: "Influencer Marketing Calculators",
   },
+  {
+    name: "Creator Tax Calculator",
+    path: "/creator-tax-calculator",
+    description:
+      "Estimate creator taxes by combining federal and state tax rates. Calculate estimated taxes and net income after monthly income minus expenses.",
+    category: "Creator Monetization Calculators",
+  },
+  {
+    name: "YouTube Income Tax Calculator",
+    path: "/youtube-income-tax-calculator",
+    description:
+      "Calculate YouTube taxes by combining federal and state tax rates. Estimate taxes and net income after expenses from monthly YouTube income.",
+    category: "YouTube Calculators",
+  },
+  {
+    name: "Influencer Tax Calculator",
+    path: "/influencer-tax-calculator",
+    description:
+      "Estimate influencer taxes for brand deals and sponsorships. Enter monthly income, expenses, federal rate, and state tax to estimate net income.",
+    category: "Influencer Marketing Calculators",
+  },
+  {
+    name: "Self-Employed Tax Calculator",
+    path: "/self-employed-tax-calculator",
+    description:
+      "Estimate self-employed taxes using self-employment, federal, and state tax rates. Enter annual income and expenses to calculate total taxes.",
+    category: "Creator Monetization Calculators",
+  },
+  {
+    name: "Net Income After Tax Calculator",
+    path: "/net-income-after-tax-calculator",
+    description:
+      "Use this net income after tax calculator to estimate how much tax do creators pay. Enter income and a tax rate to calculate estimated taxes.",
+    category: "Creator Monetization Calculators",
+  },
 ]

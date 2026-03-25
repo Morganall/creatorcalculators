@@ -81,13 +81,18 @@ function isPercentInputKey(key: string) {
     key === "engagement" ||
     key === "conversion_rate" ||
     key === "conv_rate" ||
-    key === "tips_percentage"
+    key === "tips_percentage" ||
+    key === "federal_rate" ||
+    key === "self_employment_tax_rate" ||
+    key === "tax_rate"
   )
 }
 
 function isMoneyInputKey(key: string) {
   // These are generally CPM/RPM, prices, and currency-like inputs.
   return (
+    key === "income" ||
+    key === "expenses" ||
     key === "cpm" ||
     key === "rpm" ||
     key === "price" ||
@@ -155,6 +160,16 @@ type CalculatorKey =
   | "/tiktok-account-worth-calculator"
   | "/youtube-channel-worth-calculator"
   | "/influencer-value-calculator"
+  | "/creator-tax-calculator"
+  | "/creator-tax-calculator-net"
+  | "/youtube-income-tax-calculator"
+  | "/youtube-income-tax-calculator-net"
+  | "/influencer-tax-calculator"
+  | "/influencer-tax-calculator-net"
+  | "/self-employed-tax-calculator"
+  | "/self-employed-tax-calculator-net"
+  | "/net-income-after-tax-calculator"
+  | "/net-income-after-tax-calculator-net"
 
 type CalculatorLogic = {
   calculate: (values: CalculatorValues) => number
@@ -168,6 +183,39 @@ type CalculatorInputConfig = {
   helper?: string
   type?: "number" | "select"
   options?: Array<{ label: string; value: string }>
+}
+
+function standardTaxResult(v: CalculatorValues) {
+  const income = v.income || 0
+  const expenses = v.expenses || 0
+  const federalRate = v.federal_rate || 0
+  const stateRate = v.state_rate || 0
+  const taxableIncome = income - expenses
+  const totalTaxRate = federalRate / 100 + stateRate
+  const tax = taxableIncome * totalTaxRate
+  return { tax, net: taxableIncome - tax }
+}
+
+function selfEmployedTaxResult(v: CalculatorValues) {
+  const income = v.income || 0
+  const expenses = v.expenses || 0
+  const selfEmploymentRate = v.self_employment_tax_rate || 0
+  const federalRate = v.federal_rate || 0
+  const stateRate = v.state_rate || 0
+  const taxableIncome = income - expenses
+
+  const selfEmploymentTax = taxableIncome * (selfEmploymentRate / 100)
+  const federalTax = taxableIncome * (federalRate / 100)
+  const stateTax = taxableIncome * stateRate
+  const tax = selfEmploymentTax + federalTax + stateTax
+  return { tax, net: taxableIncome - tax }
+}
+
+function netIncomeAfterTaxResult(v: CalculatorValues) {
+  const income = v.income || 0
+  const taxRate = v.tax_rate || 0
+  const tax = income * (taxRate / 100)
+  return { tax, net: income - tax }
 }
 
 const calculatorLogic: Record<CalculatorKey, CalculatorLogic> = {
@@ -527,6 +575,36 @@ const calculatorLogic: Record<CalculatorKey, CalculatorLogic> = {
       return followers * engagementRate * platformMultiplier * posts
     },
   },
+  "/creator-tax-calculator": {
+    calculate: (v) => standardTaxResult(v).tax,
+  },
+  "/creator-tax-calculator-net": {
+    calculate: (v) => standardTaxResult(v).net,
+  },
+  "/youtube-income-tax-calculator": {
+    calculate: (v) => standardTaxResult(v).tax,
+  },
+  "/youtube-income-tax-calculator-net": {
+    calculate: (v) => standardTaxResult(v).net,
+  },
+  "/influencer-tax-calculator": {
+    calculate: (v) => standardTaxResult(v).tax,
+  },
+  "/influencer-tax-calculator-net": {
+    calculate: (v) => standardTaxResult(v).net,
+  },
+  "/self-employed-tax-calculator": {
+    calculate: (v) => selfEmployedTaxResult(v).tax,
+  },
+  "/self-employed-tax-calculator-net": {
+    calculate: (v) => selfEmployedTaxResult(v).net,
+  },
+  "/net-income-after-tax-calculator": {
+    calculate: (v) => netIncomeAfterTaxResult(v).tax,
+  },
+  "/net-income-after-tax-calculator-net": {
+    calculate: (v) => netIncomeAfterTaxResult(v).net,
+  },
 }
 
 function getDefaultValues(
@@ -577,6 +655,26 @@ function getDefaultValues(
       defaults[key] = "4"
       continue
     }
+
+    if (key === "federal_rate") {
+      defaults[key] = "22"
+      continue
+    }
+
+    if (key === "self_employment_tax_rate") {
+      defaults[key] = "15.3"
+      continue
+    }
+
+    if (key === "state_rate") {
+      defaults[key] = "0"
+      continue
+    }
+
+    if (key === "tax_rate") {
+      defaults[key] = "22"
+      continue
+    }
   }
 
   return defaults
@@ -608,6 +706,11 @@ export type CalculatorTemplateProps = {
   exampleCalculation?: string
   formula?: string
   resultLabel?: string
+  secondaryCalculatorKey?: CalculatorKey
+  secondaryResultLabel?: string
+  disclaimer?: string
+  resultSubtext?: string
+  secondaryResultSubtext?: string
   faq?: { question: string; answer: string }[]
   relatedCalculators?: { name: string; path: string }[]
 }
@@ -631,6 +734,11 @@ export default function CalculatorTemplate({
   exampleCalculation = defaultExample,
   formula = defaultFormula,
   resultLabel = "Estimated Result",
+  secondaryCalculatorKey,
+  secondaryResultLabel = "Net Income After Taxes",
+  disclaimer,
+  resultSubtext,
+  secondaryResultSubtext,
   faq = defaultFaq,
   relatedCalculators = defaultRelated,
 }: CalculatorTemplateProps) {
@@ -643,6 +751,10 @@ export default function CalculatorTemplate({
     initialDefaults,
   )
   const [result, setResult] = useState<number | null>(null)
+  const [secondaryResult, setSecondaryResult] = useState<number | null>(null)
+
+  const defaultResultSubtext =
+    "Estimated earnings based on your inputs. Actual results may vary."
 
   useEffect(() => {
     // When the calculator key or inputs change, refresh defaults and auto-calculate once.
@@ -652,23 +764,40 @@ export default function CalculatorTemplate({
     setValues(newDefaults)
 
     const output = calculateResult(calculatorKey, newDefaults)
-    if (output !== null) {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setResult(output)
+
+    if (secondaryCalculatorKey) {
+      const outputSecondary = calculateResult(
+        secondaryCalculatorKey,
+        newDefaults,
+      )
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setResult(output)
+      setSecondaryResult(outputSecondary)
+    } else {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSecondaryResult(null)
     }
-  }, [calculatorKey, inputs])
+  }, [calculatorKey, inputs, secondaryCalculatorKey])
 
   useEffect(() => {
     if (!autoCalculate) return
     const output = calculateResult(calculatorKey, values)
-    if (output !== null) {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setResult(output)
+
+    if (secondaryCalculatorKey) {
+      const outputSecondary = calculateResult(
+        secondaryCalculatorKey,
+        values,
+      )
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setResult(output)
+      setSecondaryResult(outputSecondary)
     } else {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setResult(null)
+      setSecondaryResult(null)
     }
-  }, [autoCalculate, calculatorKey, values])
+  }, [autoCalculate, calculatorKey, secondaryCalculatorKey, values])
 
   function handleChange(key: string, value: string) {
     const raw = sanitizeToRawNumber(value)
@@ -680,8 +809,16 @@ export default function CalculatorTemplate({
 
   function handleCalculate() {
     const output = calculateResult(calculatorKey, values)
-    if (output !== null) {
-      setResult(output)
+    setResult(output)
+
+    if (secondaryCalculatorKey) {
+      const outputSecondary = calculateResult(
+        secondaryCalculatorKey,
+        values,
+      )
+      setSecondaryResult(outputSecondary)
+    } else {
+      setSecondaryResult(null)
     }
   }
 
@@ -690,10 +827,16 @@ export default function CalculatorTemplate({
     setValues(defaults)
 
     const output = calculateResult(calculatorKey, defaults)
-    if (output !== null) {
-      setResult(output)
+    setResult(output)
+
+    if (secondaryCalculatorKey) {
+      const outputSecondary = calculateResult(
+        secondaryCalculatorKey,
+        defaults,
+      )
+      setSecondaryResult(outputSecondary)
     } else {
-      setResult(null)
+      setSecondaryResult(null)
     }
   }
 
@@ -826,11 +969,34 @@ export default function CalculatorTemplate({
                   : formatUsd(result)}
               </div>
               <p className="mt-3 text-sm text-gray-600 leading-relaxed">
-                Estimated earnings based on your inputs. Actual results may
-                vary.
+                {resultSubtext ?? defaultResultSubtext}
               </p>
             </div>
           )}
+
+          {secondaryCalculatorKey && secondaryResult !== null && (
+            <div className="mt-4 rounded-2xl bg-gradient-to-b from-[#F0F2FF] to-[#FFF7ED]/70 px-6 py-6 text-center ring-1 ring-[#5B5FFF]/10 editorial-fade-in-up">
+              <div className="text-sm font-semibold uppercase tracking-widest text-gray-600">
+                {secondaryResultLabel}
+              </div>
+              <div className="mt-3 text-4xl font-semibold tracking-tight text-[#5B5FFF] leading-[1.05] sm:text-5xl">
+                {calculatorLogic[secondaryCalculatorKey]?.formatResult
+                  ? calculatorLogic[secondaryCalculatorKey]?.formatResult?.(
+                      secondaryResult,
+                    )
+                  : formatUsd(secondaryResult)}
+              </div>
+              <p className="mt-3 text-sm text-gray-600 leading-relaxed">
+                {secondaryResultSubtext ?? defaultResultSubtext}
+              </p>
+            </div>
+          )}
+
+          {disclaimer ? (
+            <p className="mt-4 text-xs leading-relaxed text-gray-500">
+              {disclaimer}
+            </p>
+          ) : null}
         </div>
       </div>
 
