@@ -99,8 +99,24 @@ export default function Home() {
     <main className="min-h-screen bg-[#F7F7FB] text-[#1F2937]">
       <div className="mx-auto max-w-6xl px-4 pb-24 pt-8 sm:px-6 sm:pt-10">
         {/* Hero + Search */}
-        <section className="relative overflow-hidden rounded-3xl border border-gray-200/60 bg-gradient-to-b from-white/70 to-[#FFF7ED]/25 px-5 py-10 sm:px-10 sm:py-14">
-          <div className="mx-auto max-w-2xl text-center">
+        <section className="relative overflow-hidden rounded-3xl border border-gray-200/60 bg-gradient-to-r from-purple-50/60 via-blue-50/40 to-pink-50/30 px-5 py-10 sm:px-10 sm:py-14 shadow-lg">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
+            <div className="absolute -left-16 top-8 h-48 w-48 rounded-full bg-gradient-to-br from-purple-200/40 to-pink-200/30 blur-3xl opacity-20" />
+            <div className="absolute -right-16 top-2 h-40 w-40 rounded-full bg-gradient-to-br from-blue-200/40 to-purple-200/30 blur-3xl opacity-20" />
+            <div className="absolute left-1/2 top-20 h-px w-[520px] -translate-x-1/2 bg-gradient-to-r from-transparent via-purple-300/40 to-transparent blur-sm opacity-60" />
+            <svg
+              viewBox="0 0 100 100"
+              className="absolute bottom-24 left-6 h-28 w-28 text-purple-300/70 blur-2xl opacity-20"
+              aria-hidden="true"
+            >
+              <path
+                fill="currentColor"
+                d="M58.8,13.3C71.8,22.6,82,32.4,84.1,44.4C86.2,56.4,80.2,70.6,68,79.3C55.8,88,37.4,91.2,25,82.4C12.6,73.6,6.2,52.8,12.7,37.7C19.2,22.6,38.5,13,58.8,13.3Z"
+              />
+            </svg>
+          </div>
+
+          <div className="relative z-10 mx-auto max-w-2xl text-center">
             <h1 className="font-serif text-[2.6rem] sm:text-[3.25rem] md:text-[4rem] font-bold tracking-tight text-gray-900 leading-[1.05]">
               Creator Calculators
             </h1>
@@ -112,8 +128,8 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="relative mx-auto mt-10 max-w-2xl">
-            <div className="flex min-h-[44px] items-center gap-3 rounded-full border border-gray-200/80 bg-white/70 px-4 py-2 shadow-sm backdrop-blur">
+          <div className="relative z-10 mx-auto mt-10 max-w-2xl">
+            <div className="flex min-h-[44px] items-center gap-3 rounded-full border border-gray-200/80 bg-white/70 px-4 py-2 shadow-sm backdrop-blur transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
               <label htmlFor="search" className="sr-only">
                 Search calculators
               </label>
@@ -161,7 +177,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
             <svg
               viewBox="0 0 1440 320"
               preserveAspectRatio="none"
@@ -169,7 +185,7 @@ export default function Home() {
             >
               <path
                 fill="#FFF7ED"
-                opacity="0.6"
+                opacity="0.35"
                 d="M0,96L60,112C120,128,240,160,360,165.3C480,171,600,149,720,138.7C840,128,960,128,1080,144C1200,160,1320,192,1380,208L1440,224L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
               />
             </svg>

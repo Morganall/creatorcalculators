@@ -917,8 +917,11 @@ export default function CalculatorTemplate({
                         <option value="" disabled>
                           {input.placeholder || "Select an option"}
                         </option>
-                        {input.options.map((opt) => (
-                          <option key={opt.value} value={opt.value}>
+                        {input.options.map((opt, index) => (
+                          <option
+                            key={`${opt.value}-${index}`}
+                            value={opt.value}
+                          >
                             {opt.label}
                           </option>
                         ))}

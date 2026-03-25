@@ -74,3 +74,22 @@ export function IconHandshake({
   )
 }
 
+export function IconSparkles({
+  className = "",
+}: {
+  className?: string
+}) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      className={className}
+    >
+      <path d="M12 2l1.3 4.2L17.5 7.5l-4.2 1.3L12 13l-1.3-4.2L6.5 7.5l4.2-1.3L12 2z" />
+      <path d="M19 11l.8 2.6L22 14.4l-2.2.8L19 18l-.8-2.8-2.2-.8 2.2-.8L19 11z" />
+      <path d="M5 13l.9 2.2L8.1 16l-2.2.8L5 19l-.9-2.2L1.9 16l2.2-.8L5 13z" />
+    </svg>
+  )
+}
+
