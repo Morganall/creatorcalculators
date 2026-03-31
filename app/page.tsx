@@ -21,6 +21,21 @@ function groupByCategory(calcs: Calculator[]) {
 export default function Home() {
   const [search, setSearch] = useState("")
 
+  function getSearchKeywords(calc: Calculator): string[] {
+    const base = [calc.category, calc.path, calc.name, calc.description]
+    const text = `${calc.name} ${calc.description} ${calc.category} ${calc.path}`.toLowerCase()
+
+    if (text.includes("youtube")) base.push("youtube", "yt")
+    if (text.includes("tiktok")) base.push("tiktok", "tt")
+    if (text.includes("instagram")) base.push("instagram", "ig", "reels")
+    if (text.includes("influencer")) base.push("influencer", "creator")
+    if (text.includes("affiliate")) base.push("affiliate")
+    if (text.includes("podcast")) base.push("podcast")
+    if (text.includes("newsletter")) base.push("newsletter", "email")
+
+    return base
+  }
+
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -71,12 +86,30 @@ export default function Home() {
   const filteredCalculators = (() => {
     if (!search.trim()) return calculators
     const q = search.trim().toLowerCase()
-    return calculators.filter(
-      (calc) =>
-        calc.name.toLowerCase().includes(q) ||
-        calc.description.toLowerCase().includes(q),
+    return calculators.filter((calc) =>
+      getSearchKeywords(calc).some((keyword) =>
+        keyword.toLowerCase().includes(q),
+      ),
     )
   })()
+
+  const popularCalculatorNames = [
+    "TikTok Account Worth Calculator",
+    "YouTube Channel Worth Calculator",
+    "Influencer Value Calculator",
+    "TikTok Money Calculator",
+    "YouTube Revenue Calculator",
+    "Instagram Earnings Calculator",
+    "Influencer Rate Calculator",
+    "Affiliate Earnings Calculator",
+    "Newsletter Revenue Calculator",
+  ]
+
+  const featuredSource = search.trim() ? filteredCalculators : calculators
+  const featuredCalculators = popularCalculatorNames
+    .map((name) => featuredSource.find((c) => c.name === name))
+    .filter((calc): calc is Calculator => Boolean(calc))
+    .slice(0, 4)
 
   const byCategory = groupByCategory(filteredCalculators)
 
@@ -200,23 +233,9 @@ export default function Home() {
             </h2>
           </div>
           <ul className="grid gap-6 sm:grid-cols-2">
-            {[
-              "TikTok Account Worth Calculator",
-              "YouTube Channel Worth Calculator",
-              "Influencer Value Calculator",
-              "TikTok Money Calculator",
-              "YouTube Revenue Calculator",
-              "Instagram Earnings Calculator",
-              "Influencer Rate Calculator",
-              "Affiliate Earnings Calculator",
-              "Newsletter Revenue Calculator",
-            ]
-              .map((name) => calculators.find((c) => c.name === name))
-              .filter((calc): calc is Calculator => Boolean(calc))
-              .slice(0, 4)
-              .map((calc) => (
-                <FeaturedCalculatorCard key={calc.path} calc={calc} />
-              ))}
+            {featuredCalculators.map((calc) => (
+              <FeaturedCalculatorCard key={calc.path} calc={calc} />
+            ))}
           </ul>
         </section>
 
@@ -225,7 +244,7 @@ export default function Home() {
           <div className="space-y-14">
             {filteredCalculators.length === 0 ? (
               <p className="py-12 text-center text-gray-500">
-                No calculators match &quot;{search}&quot;. Try a different search.
+                No calculators found
               </p>
             ) : (
               Array.from(byCategory.entries()).map(([category, calcs]) => (
