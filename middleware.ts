@@ -5,14 +5,25 @@ const CANONICAL_HOST = "creatorcalculators.com"
 
 export function middleware(req: NextRequest) {
   const url = req.nextUrl
-  const host = req.headers.get("host") || ""
-  const proto = req.headers.get("x-forwarded-proto") || url.protocol.replace(":", "")
+  const requestOrigin = url.origin
+  const requestHost = url.hostname
+  const forwardedProto = req.headers.get("x-forwarded-proto")
+  const requestProto = (forwardedProto || url.protocol.replace(":", "")).toLowerCase()
 
-  const needsRedirect = host !== CANONICAL_HOST || proto !== "https"
+  // Never redirect when we're already on the canonical origin.
+  if (requestOrigin !== CANONICAL_ORIGIN) {
+    const needsRedirect =
+      requestHost !== CANONICAL_HOST ||
+      requestProto !== "https" ||
+      requestHost.startsWith("www.")
 
-  if (needsRedirect) {
-    const redirectUrl = new URL(`${url.pathname}${url.search}`, CANONICAL_ORIGIN)
-    return NextResponse.redirect(redirectUrl, 308)
+    if (needsRedirect) {
+      const redirectUrl = new URL(`${url.pathname}${url.search}`, CANONICAL_ORIGIN)
+      // Avoid repeated redirects if the target is already exactly this URL.
+      if (redirectUrl.href !== url.href) {
+        return NextResponse.redirect(redirectUrl, 308)
+      }
+    }
   }
 
   const requestHeaders = new Headers(req.headers)
