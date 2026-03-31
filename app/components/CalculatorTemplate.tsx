@@ -703,6 +703,8 @@ export type CalculatorTemplateProps = {
   autoCalculate?: boolean
   intro?: string
   howItWorks?: string
+  whatImpacts?: string[]
+  howToImprove?: string[]
   exampleCalculation?: string
   formula?: string
   resultLabel?: string
@@ -724,6 +726,363 @@ const defaultFaq: { question: string; answer: string }[] = [
 ]
 const defaultRelated: { name: string; path: string }[] = []
 
+function getInputSummary(inputs: CalculatorInputConfig[]): string {
+  const labels = inputs.map((input) => input.label.replace(/\s*\([^)]*\)\s*/g, "").trim())
+  if (labels.length === 0) return "your selected metrics"
+  if (labels.length === 1) return labels[0].toLowerCase()
+  if (labels.length === 2) return `${labels[0].toLowerCase()} and ${labels[1].toLowerCase()}`
+  return `${labels.slice(0, -1).map((label) => label.toLowerCase()).join(", ")}, and ${labels[labels.length - 1].toLowerCase()}`
+}
+
+function getCalculatorNugget(calculatorKey: CalculatorKey): string {
+  const nuggets: Partial<Record<CalculatorKey, string>> = {
+    "/tiktok-money-calculator":
+      "best for forecasting TikTok ad-driven earnings before you commit to a content series",
+    "/youtube-revenue-calculator":
+      "helpful when validating whether projected YouTube views can hit your monthly income target",
+    "/youtube-cpm-calculator":
+      "useful for reverse-engineering your effective monetization quality from past video performance",
+    "/youtube-channel-revenue-calculator":
+      "ideal for channel-level planning when you need to model revenue from total monthly traffic",
+    "/tiktok-viral-earnings-calculator":
+      "designed for spike scenarios where one breakout post can materially change monthly revenue",
+    "/creator-brand-deal-roi-calculator":
+      "valuable when deciding if a sponsorship package truly outperforms its production and distribution costs",
+    "/newsletter-subscriber-value-calculator":
+      "great for understanding how much each subscriber is worth before scaling acquisition spend",
+    "/podcast-sponsorship-revenue-calculator":
+      "useful when packaging ad slots and setting realistic sponsor expectations from download volume",
+    "/creator-ad-revenue-calculator":
+      "practical for estimating ad earnings from campaign impression goals and CPM assumptions",
+    "/influencer-cost-per-post-calculator":
+      "effective for normalizing campaign pricing when a deal includes multiple deliverables",
+    "/affiliate-conversion-revenue-calculator":
+      "helps convert click and conversion assumptions into realistic affiliate payout expectations",
+    "/creator-monthly-income-calculator":
+      "best for combining revenue streams into one planning number for monthly operating decisions",
+    "/instagram-follower-growth-calculator":
+      "useful for spotting whether growth pace supports your partnership and launch timelines",
+    "/tiktok-engagement-value-calculator":
+      "helps quantify interaction quality so creators and brands can price performance with more confidence",
+    "/youtube-subscriber-growth-calculator":
+      "useful when projecting milestone timing for monetization thresholds and sponsor readiness",
+    "/social-media-growth-rate-calculator":
+      "designed for trend tracking when you need a normalized daily growth pace across periods",
+    "/influencer-campaign-roi-calculator":
+      "best for measuring whether influencer spend produced enough attributable return to justify reinvestment",
+    "/instagram-earnings-calculator":
+      "useful when estimating campaign earnings based on audience size and engagement strength",
+    "/instagram-reel-earnings-calculator":
+      "great for evaluating whether Reels volume can support specific monthly revenue targets",
+    "/tiktok-creator-fund-calculator":
+      "intended for Creator Fund payout estimates when view volume is changing quickly",
+    "/youtube-shorts-revenue-calculator":
+      "helpful for Shorts-first creators comparing short-form output with revenue goals",
+    "/tiktok-earnings-per-view-calculator":
+      "useful when your monetization model is based on direct earnings-per-view assumptions",
+    "/creator-earnings-calculator":
+      "good for top-line creator revenue forecasting from audience and payout inputs",
+    "/sponsorship-value-calculator":
+      "designed to estimate sponsorship inventory value before negotiating campaign terms",
+    "/course-revenue-calculator":
+      "effective for launch planning when testing conversion and pricing scenarios for digital products",
+    "/newsletter-revenue-calculator":
+      "useful for forecasting newsletter monetization from list size and conversion assumptions",
+    "/podcast-cpm-calculator":
+      "helps podcasters estimate monetization potential from download volume and CPM rates",
+    "/affiliate-earnings-calculator":
+      "great for modeling affiliate outcomes before investing in promotion or paid traffic",
+    "/brand-deal-value-calculator":
+      "useful when building rate card anchors for brand partnerships",
+    "/influencer-rate-calculator":
+      "helps creators benchmark baseline rates before negotiation",
+    "/tiktok-engagement-calculator":
+      "designed to quantify how efficiently views convert into active audience interaction",
+    "/instagram-engagement-calculator":
+      "useful for benchmarking profile health and validating creator-brand fit",
+    "/onlyfans-earnings-calculator":
+      "practical for modeling subscriber income plus tips before setting subscription strategy",
+    "/influencer-payment-calculator":
+      "helps estimate fair compensation tied to expected engaged audience outcomes",
+    "/social-media-value-calculator":
+      "useful for translating audience and engagement signals into business value estimates",
+    "/blog-earnings-calculator":
+      "designed for publisher planning when traffic and RPM assumptions shift month to month",
+    "/youtube-money-calculator":
+      "helpful for quick YouTube payout checks while testing different traffic outcomes",
+    "/instagram-money-calculator":
+      "useful when pricing sponsored posts against expected engaged reach",
+    "/influencer-money-calculator":
+      "good for monthly influencer income projections across posting frequency scenarios",
+    "/tiktok-money-per-1000-views":
+      "best for understanding payout sensitivity to RPM changes per thousand views",
+    "/youtube-money-per-1000-views":
+      "best for CPM sensitivity planning when monetization rates fluctuate",
+    "/how-much-can-i-earn-with-x-followers":
+      "useful for creator monetization planning when follower count is your starting benchmark",
+    "/1-million-views-calculator":
+      "ideal for headline planning when you want to test one-million-view payout outcomes",
+    "/tiktok-follower-earnings-calculator":
+      "helps estimate follower-driven earnings potential from engagement quality",
+    "/youtube-subscriber-earnings-calculator":
+      "useful for estimating recurring revenue potential from your subscriber base",
+    "/viral-video-earnings-calculator":
+      "designed for multi-platform viral scenarios where payout assumptions vary by channel",
+    "/tiktok-account-worth-calculator":
+      "useful for account valuation discussions and acquisition-style pricing benchmarks",
+    "/youtube-channel-worth-calculator":
+      "good for annualized valuation snapshots based on channel monetization performance",
+    "/influencer-value-calculator":
+      "helps estimate commercial creator value for packaging and partnership negotiations",
+    "/creator-tax-calculator":
+      "helpful for creators planning tax reserves against fluctuating monthly income and expenses",
+    "/creator-tax-calculator-net":
+      "helpful for creators planning true take-home income after estimated taxes",
+    "/youtube-income-tax-calculator":
+      "useful for YouTube creators planning tax obligations from ad and sponsor income",
+    "/youtube-income-tax-calculator-net":
+      "useful for YouTube creators planning net income after estimated taxes",
+    "/influencer-tax-calculator":
+      "best for forecasting tax liability from brand deal and sponsorship cash flow",
+    "/influencer-tax-calculator-net":
+      "best for forecasting post-tax net from influencer campaign income",
+    "/self-employed-tax-calculator":
+      "designed for self-employed creators balancing self-employment, federal, and state tax impact",
+    "/self-employed-tax-calculator-net":
+      "designed for self-employed creators estimating net take-home after total tax burden",
+    "/net-income-after-tax-calculator":
+      "helpful when quickly translating gross income into expected after-tax income",
+    "/net-income-after-tax-calculator-net":
+      "helpful when quickly translating gross income assumptions into net planning numbers",
+  }
+
+  return (
+    nuggets[calculatorKey] ??
+    "useful for turning rough assumptions into planning-grade revenue and performance estimates"
+  )
+}
+
+function getContextualSections(
+  calculatorKey: CalculatorKey,
+  title: string,
+  inputs: CalculatorInputConfig[],
+) {
+  const inputSummary = getInputSummary(inputs)
+  const lowerTitle = title.toLowerCase()
+  const nugget = getCalculatorNugget(calculatorKey)
+  const isTax = calculatorKey.includes("tax")
+  const isGrowth = calculatorKey.includes("growth")
+  const isEngagement = calculatorKey.includes("engagement")
+  const isRoi = calculatorKey.includes("roi")
+  const isCpmOrRpm =
+    calculatorKey.includes("cpm") || calculatorKey.includes("rpm") || calculatorKey.includes("1000")
+  const isWorthOrValue =
+    calculatorKey.includes("worth") || calculatorKey.includes("value")
+  const isAffiliate = calculatorKey.includes("affiliate")
+  const isNewsletter = calculatorKey.includes("newsletter")
+  const isCourse = calculatorKey.includes("course")
+  const isPodcast = calculatorKey.includes("podcast")
+
+  const intro = `Use this ${lowerTitle} to turn ${inputSummary} into a practical estimate you can use for planning. It matters because small shifts in your assumptions can change revenue, pricing, or profitability decisions by a meaningful amount. This calculator is ${nugget}.`
+
+  const defaultHow = `This calculator combines the inputs you enter for ${inputSummary} and applies the page-specific formula shown below to estimate your result. In real creator workflows, these inputs represent moving variables such as traffic quality, audience behavior, seasonality, and platform monetization terms. Treat the output as a decision-support range rather than a fixed guarantee, then compare scenarios by adjusting one variable at a time to see which input has the biggest effect.`
+
+  if (isTax) {
+    return {
+      intro,
+      how: `This tax-focused calculator uses your income and rate assumptions to estimate tax burden and, where relevant, post-tax take-home income. In practice, creators use this model to plan quarterly payments, check whether current pricing still supports net goals, and avoid cash-flow surprises when tax deadlines arrive. Inputs like expenses and combined tax rates matter because they directly change taxable income and the amount you should reserve each month.`,
+      impacts: [
+        "Your true taxable income after deductible business expenses",
+        "Federal, state, and self-employment rates that apply to your filing setup",
+        "How consistent your monthly income is across launches or sponsorship cycles",
+        "Business structure decisions (sole proprietor vs entity) and deduction strategy",
+        "Whether income is ordinary revenue, affiliate income, or other taxed streams",
+      ],
+      improve: [
+        "Track deductible expenses monthly so you are not overestimating taxable income",
+        "Set aside a fixed tax percentage from each payout in a separate account",
+        "Review rates quarterly when income bands or state obligations change",
+        "Model best-case and conservative scenarios before committing to new costs",
+        "Work with a tax professional when your revenue mix gets more complex",
+      ],
+    }
+  }
+
+  if (isGrowth) {
+    return {
+      intro,
+      how: `This growth calculator measures how quickly your audience is changing over time based on ${inputSummary}. The output gives a normalized pace (for example per day), which helps you compare periods with different campaign lengths. In real use, teams pair this number with posting cadence and content format changes to identify what actually drives sustained growth instead of one-time spikes.`,
+      impacts: [
+        "Consistency of your posting cadence during the measured period",
+        "Content format fit with platform recommendation systems",
+        "External events, collaborations, or mentions that spike discovery",
+        "Retention quality of new followers after viral moments",
+        "Whether growth comes from broad reach or niche audience alignment",
+      ],
+      improve: [
+        "Analyze top-performing posts and publish more iterations of winning formats",
+        "Increase posting consistency before increasing posting volume",
+        "Use hooks, thumbnails, and captions that improve first-second retention",
+        "Collaborate with adjacent creators to introduce your content to new audiences",
+        "Audit audience drop-off points weekly and adjust content structure quickly",
+      ],
+    }
+  }
+
+  if (isEngagement) {
+    return {
+      intro,
+      how: `This engagement calculator translates your activity signals into a comparable engagement metric using the inputs for ${inputSummary}. It is most useful when benchmarking campaigns, evaluating creator fit, or validating whether audience attention is improving over time. In real-world reporting, this metric is strongest when paired with reach quality and conversion outcomes, not treated as a standalone success number.`,
+      impacts: [
+        "Audience relevance between your content topic and current follower interests",
+        "Distribution quality (how often content reaches non-followers)",
+        "Creative format choices that influence comments, shares, and saves",
+        "Timing and frequency of posts relative to audience activity windows",
+        "Community management speed that encourages additional interactions",
+      ],
+      improve: [
+        "Prioritize formats that naturally trigger replies or shares, not just passive views",
+        "Use clearer calls to action that invite specific audience responses",
+        "Post at time windows where your audience historically engages fastest",
+        "Respond to early comments quickly to improve conversation depth",
+        "Track engagement by content pillar and reallocate effort to winners",
+      ],
+    }
+  }
+
+  if (isRoi) {
+    return {
+      intro,
+      how: `This ROI calculator compares outcome value against campaign spend using your ${inputSummary} inputs. It matters because headline revenue can look strong while still underperforming once total costs are included. Use it to evaluate partnerships, decide whether to renew a campaign, and set clearer performance thresholds before budget is committed.`,
+      impacts: [
+        "Total campaign cost including production, creator fees, and distribution",
+        "Attribution model accuracy for revenue tied to the campaign",
+        "Conversion quality from campaign traffic compared to baseline traffic",
+        "Time horizon used to count revenue (immediate vs delayed conversions)",
+        "Offer relevance and landing page performance after the sponsored touchpoint",
+      ],
+      improve: [
+        "Define success KPIs and minimum acceptable ROI before launch",
+        "Improve landing pages and checkout flow before scaling spend",
+        "Use trackable links, promo codes, or pixel events for cleaner attribution",
+        "Negotiate deliverables around high-intent formats, not only impressions",
+        "Run post-campaign breakdowns by segment to identify profitable audiences",
+      ],
+    }
+  }
+
+  if (isCpmOrRpm) {
+    return {
+      intro,
+      how: `This calculator estimates earnings or effective payout per thousand units based on ${inputSummary}. It helps creators quickly test payout scenarios and understand how traffic volume translates into dollars across platforms. In practice, creators use this for sponsorship planning, forecasting content series revenue, and stress-testing assumptions when CPM or RPM fluctuates.`,
+      impacts: [
+        "Audience geography and advertiser demand in your content niche",
+        "Seasonality effects such as Q4 ad spend increases or off-season dips",
+        "Monetized-view quality and overall watch behavior",
+        "Platform policy changes that alter payout mechanics",
+        "Topic mix and brand safety suitability for premium ad inventory",
+      ],
+      improve: [
+        "Create content around advertiser-friendly topics with strong audience intent",
+        "Increase retention and watch time to improve monetized inventory quality",
+        "Diversify monetization streams so low-CPM periods hurt less",
+        "Refresh older high-performing content to capture additional long-tail views",
+        "Use historical payout ranges when forecasting, not a single optimistic number",
+      ],
+    }
+  }
+
+  if (isWorthOrValue) {
+    return {
+      intro,
+      how: `This calculator estimates account or creator value from ${inputSummary} so you can anchor pricing and negotiation decisions. The result is directional: it reflects the commercial potential implied by your audience and performance assumptions, not a guaranteed market price. Use it when setting rate cards, evaluating acquisition offers, or comparing partnership packages.`,
+      impacts: [
+        "Audience quality and fit with commercial buyer categories",
+        "True engagement depth beyond vanity follower totals",
+        "Content niche monetization potential and advertiser competition",
+        "Consistency of historical performance across recent months",
+        "Platform risk and policy stability that affect long-term earning potential",
+      ],
+      improve: [
+        "Build repeatable content pillars that keep performance consistent",
+        "Document campaign outcomes to support higher valuation in negotiations",
+        "Develop stronger audience demographics data for brand-fit proof",
+        "Increase direct-response capability, not only awareness metrics",
+        "Package deliverables into clear offers with predictable outcomes",
+      ],
+    }
+  }
+
+  if (isAffiliate || isNewsletter || isCourse || isPodcast) {
+    return {
+      intro,
+      how: `This calculator models revenue for your ${lowerTitle.replace(" calculator", "")} based on ${inputSummary}. It is useful for pricing tests, campaign planning, and setting realistic monthly targets before launch. In real operations, creators revisit these inputs weekly because conversion behavior and traffic quality change quickly as audience intent shifts.`,
+      impacts: [
+        "Traffic quality and intent level of incoming visitors or listeners",
+        "Offer-market fit and clarity of your pricing/value proposition",
+        "Conversion friction in signup, checkout, or click flow",
+        "Audience trust built through consistent educational content",
+        "Promotion timing and repetition across channels",
+      ],
+      improve: [
+        "Tighten your offer positioning so the value is obvious in seconds",
+        "Test one variable at a time (headline, CTA, pricing, or placement)",
+        "Retarget engaged users who did not convert on first touch",
+        "Use segmented messaging for different audience intent levels",
+        "Track weekly conversion trends and iterate before scaling spend",
+      ],
+    }
+  }
+
+  return {
+    intro,
+    how: defaultHow,
+    impacts: [
+      "Input accuracy and whether your assumptions reflect current performance",
+      "Platform-specific monetization rules and market demand changes",
+      "Audience quality, retention, and conversion behavior",
+      "Content consistency and distribution timing over time",
+      "External seasonality and competitive conditions in your niche",
+    ],
+    improve: [
+      "Update assumptions using recent data instead of old averages",
+      "Run best-case, expected, and conservative scenarios before decisions",
+      "Improve content quality and audience targeting for stronger outcomes",
+      "Pair this metric with conversion and profitability metrics",
+      "Review results regularly and adjust strategy as performance changes",
+    ],
+  }
+}
+
+function ensureDetailedFaqAnswer(answer: string, title: string): string {
+  const sentenceCount = answer
+    .split(/[.!?]+/)
+    .map((part) => part.trim())
+    .filter(Boolean).length
+  if (sentenceCount >= 2) return answer
+  return `${answer} Use this ${title.toLowerCase()} as a planning estimate, then compare multiple input scenarios before making budget or pricing decisions.`
+}
+
+function getDefaultFaq(title: string): { question: string; answer: string }[] {
+  return [
+    {
+      question: `How accurate is this ${title.toLowerCase()}?`,
+      answer:
+        "It provides a directional estimate based on the numbers you enter, not a guaranteed outcome. Real performance changes with audience quality, platform behavior, and campaign execution, so it is best used for scenario planning.",
+    },
+    {
+      question: "How should I use this number in real decisions?",
+      answer:
+        "Treat the output as a benchmark for planning, pricing, or forecasting instead of a fixed prediction. Most creators get better decisions by comparing conservative and aggressive input sets before taking action.",
+    },
+    {
+      question: "How often should I update my inputs?",
+      answer:
+        "Update inputs whenever your recent performance, pricing, or traffic source mix changes meaningfully. A monthly refresh is a strong baseline, and weekly updates are better during campaigns or fast-growth periods.",
+    },
+  ]
+}
+
 export default function CalculatorTemplate({
   title,
   inputs,
@@ -731,6 +1090,8 @@ export default function CalculatorTemplate({
   autoCalculate = false,
   intro,
   howItWorks = defaultHowItWorks,
+  whatImpacts,
+  howToImprove,
   exampleCalculation = defaultExample,
   formula = defaultFormula,
   resultLabel = "Estimated Result",
@@ -865,6 +1226,33 @@ export default function CalculatorTemplate({
 
   resolvedRelated = resolvedRelated.slice(0, 5)
 
+  const contextual = getContextualSections(calculatorKey, title, inputs)
+  const inputSummary = getInputSummary(inputs)
+  const resolvedIntro = intro ?? contextual.intro
+  const resolvedHowItWorks = howItWorks === defaultHowItWorks
+    ? contextual.how
+    : `${howItWorks} ${contextual.how}`
+  const baseWhatImpacts = whatImpacts && whatImpacts.length > 0
+    ? whatImpacts
+    : contextual.impacts
+  const baseHowToImprove = howToImprove && howToImprove.length > 0
+    ? howToImprove
+    : contextual.improve
+  const resolvedWhatImpacts = baseWhatImpacts.map((item, index) => {
+    if (index === 0) return `${item}, especially how you set ${inputSummary}`
+    if (index === 1) return `${item} when forecasting with the ${title.toLowerCase()}`
+    return item
+  })
+  const resolvedHowToImprove = baseHowToImprove.map((item, index) => {
+    if (index === 0) return `${item} and then re-check the ${title.toLowerCase()} weekly`
+    if (index === 1) return `${item} using updated ${inputSummary} benchmarks`
+    return item
+  })
+  const resolvedFaq = (faq.length > 0 ? faq : getDefaultFaq(title)).map((item) => ({
+    question: item.question,
+    answer: ensureDetailedFaqAnswer(item.answer, title),
+  }))
+
   return (
     <div className="min-h-screen bg-[#F7F7FB] px-4 py-20 text-[#1F2937] sm:-mt-10 sm:py-28">
       <div className="mx-auto max-w-2xl">
@@ -873,15 +1261,15 @@ export default function CalculatorTemplate({
             {title}
           </h1>
 
-          {intro ? (
+          {resolvedIntro ? (
             <p className="mt-4 text-center text-gray-700 leading-relaxed">
-              {intro}
+              {resolvedIntro}
             </p>
           ) : null}
 
           <div
             className={`${
-              intro ? "mt-6" : "mt-8"
+              resolvedIntro ? "mt-6" : "mt-8"
             } rounded-2xl bg-gradient-to-b from-[#F7F7FB] to-[#FFF7ED]/60 p-6 sm:p-7`}
           >
             <div className="space-y-6">
@@ -1007,7 +1395,25 @@ export default function CalculatorTemplate({
         <h2 className="font-serif text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
           How This Calculator Works
         </h2>
-        <p className="text-gray-700 leading-relaxed">{howItWorks}</p>
+        <p className="text-gray-700 leading-relaxed">{resolvedHowItWorks}</p>
+
+        <h3 className="font-serif text-xl font-semibold tracking-tight text-gray-900 sm:text-2xl">
+          What Impacts This Metric
+        </h3>
+        <ul className="list-disc space-y-2 pl-6 text-gray-700 leading-relaxed">
+          {resolvedWhatImpacts.map((item, i) => (
+            <li key={`${item}-${i}`}>{item}</li>
+          ))}
+        </ul>
+
+        <h3 className="font-serif text-xl font-semibold tracking-tight text-gray-900 sm:text-2xl">
+          How to Improve Your Results
+        </h3>
+        <ul className="list-disc space-y-2 pl-6 text-gray-700 leading-relaxed">
+          {resolvedHowToImprove.map((item, i) => (
+            <li key={`${item}-${i}`}>{item}</li>
+          ))}
+        </ul>
 
         <h3 className="font-serif text-xl font-semibold tracking-tight text-gray-900 sm:text-2xl">
           Example Calculation
@@ -1027,7 +1433,7 @@ export default function CalculatorTemplate({
           FAQs
         </h3>
         <div className="space-y-6">
-          {faq.map((item, i) => (
+          {resolvedFaq.map((item, i) => (
             <div key={i}>
               <strong className="font-medium text-gray-900">
                 {item.question}
