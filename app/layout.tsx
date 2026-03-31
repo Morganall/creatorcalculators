@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import Script from "next/script";
 import { Geist_Mono, Inter, Playfair_Display } from "next/font/google"
+import { headers } from "next/headers"
 import "./globals.css"
 
 const playfair = Playfair_Display({
@@ -22,13 +23,22 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 })
 
-export const metadata: Metadata = {
-  title: "Creator Calculators",
-  description:
-    "Free calculators for creators, influencers, and content marketers to estimate earnings, engagement, and growth.",
-  verification: {
-    google: "h-pOPORtn14SmLXEozxCFAOoW0CV-mTOf9RPOtHCxEc",
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  const canonicalPath = (await headers()).get("x-canonical-path") || "/"
+  const path = canonicalPath.startsWith("/") ? canonicalPath : `/${canonicalPath}`
+
+  return {
+    metadataBase: new URL("https://creatorcalculators.com"),
+    title: "Creator Calculators",
+    description:
+      "Free calculators for creators, influencers, and content marketers to estimate earnings, engagement, and growth.",
+    verification: {
+      google: "h-pOPORtn14SmLXEozxCFAOoW0CV-mTOf9RPOtHCxEc",
+    },
+    alternates: {
+      canonical: path,
+    },
+  }
 }
 
 export default function RootLayout({
