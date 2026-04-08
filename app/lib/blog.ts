@@ -13,6 +13,14 @@ export type BlogListBlock = {
   items: string[]
 }
 
+export type BlogLinksListBlock = {
+  type: "linksList"
+  items: Array<{
+    label: string
+    href: string
+  }>
+}
+
 export type BlogLinkCardBlock = {
   type: "linkCard"
   title: string
@@ -25,7 +33,41 @@ export type BlogContentBlock =
   | BlogHeadingBlock
   | BlogParagraphBlock
   | BlogListBlock
+  | BlogLinksListBlock
   | BlogLinkCardBlock
+
+export type BlogFaqItem = {
+  question: string
+  answer: string
+}
+
+type BlogToolLink = {
+  title: string
+  description: string
+  href: string
+  cta: string
+}
+
+type StandardBlogContentInput = {
+  intro: string
+  mainTopicExplanation: string[]
+  breakdown: {
+    explanation: string
+    bullets: string[]
+  }
+  factorsAffectingResults: string[]
+  whatThisMeansForCreators: string[]
+  realExample: string[]
+  commonMistakesToAvoid: string[]
+  tipsToIncreaseEarnings: string[]
+  tryCalculator: BlogToolLink
+  relatedCalculators: Array<{
+    label: string
+    href: string
+  }>
+  summary: string[]
+  faq: BlogFaqItem[]
+}
 
 export type BlogPost = {
   slug: string
@@ -55,29 +97,91 @@ const blogPosts: BlogPost[] = [
       "A practical framework for estimating YouTube income with better assumptions around RPM, upload consistency, and niche.",
     publishedAt: "2026-04-06",
     author: "CreatorCalculators",
-    content: [
-      { type: "p", text: "YouTube income is never a single fixed number. The same channel can see very different revenue from one month to the next because RPM changes with niche, seasonality, and viewer geography." },
-      { type: "h2", text: "Start with RPM, not CPM" },
-      { type: "p", text: "CPM is the advertiser-facing metric, while RPM reflects what creators actually keep after YouTube's revenue share and non-monetized views. For planning, RPM is usually the better anchor." },
-      { type: "ul", items: ["Use recent channel analytics when available.", "Run a low, base, and high RPM scenario.", "Treat spikes from seasonal campaigns as temporary."] },
-      { type: "h2", text: "Build three realistic scenarios" },
-      { type: "p", text: "A strong estimate includes downside and upside ranges. This keeps budgeting grounded when ad rates fluctuate." },
-      { type: "h3", text: "Low case" },
-      { type: "p", text: "Assume weaker ad demand, lower watch time quality, or more views from countries with lower ad spend." },
-      { type: "h3", text: "Base case" },
-      { type: "p", text: "Use trailing 90-day channel RPM and expected monthly views from your publishing cadence." },
-      { type: "h3", text: "High case" },
-      { type: "p", text: "Model a month with stronger ad inventory, higher retention, and a higher share of monetized long-form views." },
-      { type: "h2", text: "Turn estimates into decisions" },
-      { type: "p", text: "Forecasting is useful only when it informs action. Use your estimate to decide publishing pace, ad reinvestment, and sponsorship targets." },
-      {
-        type: "linkCard",
+    content: buildStandardBlogContent({
+      intro:
+        "YouTube revenue depends on RPM, audience quality, and consistency, not just total views. If you estimate income the right way, you can plan content and budgets with less guesswork.",
+      mainTopicExplanation: [
+        "Use RPM as your core metric because it reflects what you keep after YouTube's revenue share. CPM alone can make projections look higher than real payouts.",
+        "A practical estimate starts with your last 60-90 days of performance, then adjusts for expected monthly views and upload consistency.",
+      ],
+      breakdown: {
+        explanation:
+          "Simple scenario planning gives you realistic low, base, and high outcomes so you can avoid overcommitting on expenses.",
+        bullets: [
+          "Low case: 200,000 monthly views x $2.50 RPM = about $500",
+          "Base case: 200,000 monthly views x $4.00 RPM = about $800",
+          "High case: 200,000 monthly views x $6.00 RPM = about $1,200",
+        ],
+      },
+      factorsAffectingResults: [
+        "Niche and advertiser demand have a large impact on RPM.",
+        "Audience geography can raise or lower ad rates significantly.",
+        "Seasonality (Q4 vs slower months) shifts earnings even with similar views.",
+      ],
+      whatThisMeansForCreators: [
+        "Revenue swings are normal, so monthly ranges are safer than single-number forecasts.",
+        "When you understand expected ranges, you can decide how aggressively to reinvest in editing, thumbnails, or content production.",
+      ],
+      realExample: [
+        "A finance creator with 300,000 monthly views at a $7 RPM could earn around $2,100 from AdSense. In a slower month with a $4.50 RPM, the same views may produce around $1,350.",
+        "That gap shows why creators should track performance trends and plan cash flow based on conservative assumptions.",
+      ],
+      commonMistakesToAvoid: [
+        "Using CPM instead of RPM for forecasting.",
+        "Basing a 12-month plan on one unusually strong month.",
+        "Ignoring audience geography when comparing channels.",
+        "Assuming every view is monetized equally.",
+      ],
+      tipsToIncreaseEarnings: [
+        "Focus on topics with stronger advertiser demand in your niche.",
+        "Improve watch time and retention to increase monetization quality.",
+        "Publish consistently so revenue is less dependent on one viral upload.",
+        "Layer in sponsorships and affiliates instead of relying only on AdSense.",
+      ],
+      tryCalculator: {
         title: "Try the YouTube Revenue Calculator",
         description: "Plug in your expected views and RPM assumptions to model monthly and annual ranges.",
         href: "/youtube-revenue-calculator",
         cta: "Open calculator",
       },
-    ],
+      relatedCalculators: [
+        { label: "YouTube Revenue Calculator", href: "/youtube-revenue-calculator" },
+        { label: "TikTok Money Calculator", href: "/tiktok-money-calculator" },
+        { label: "Brand Deal Value Calculator", href: "/brand-deal-value-calculator" },
+        { label: "All Calculators", href: "/" },
+      ],
+      summary: [
+        "YouTube earnings are best estimated with RPM-based low, base, and high scenarios.",
+        "Better estimates help you make smarter publishing and spending decisions.",
+      ],
+      faq: [
+        {
+          question: "Is RPM or CPM better for YouTube income estimates?",
+          answer:
+            "RPM is better for creator planning because it is closer to what you actually receive after platform revenue share and non-monetized views.",
+        },
+        {
+          question: "How often should I update my estimate?",
+          answer:
+            "Update monthly using your latest analytics, especially after content strategy changes or seasonal shifts.",
+        },
+        {
+          question: "Why does revenue change even when views are stable?",
+          answer:
+            "Ad demand, geography mix, audience behavior, and seasonality can shift RPM without major view changes.",
+        },
+        {
+          question: "Should new creators use benchmarks?",
+          answer:
+            "Yes, but use conservative ranges and refine once you have your own channel data.",
+        },
+        {
+          question: "Can I rely on AdSense alone?",
+          answer:
+            "Most creators are safer with mixed income streams like sponsorships, affiliates, and digital products.",
+        },
+      ],
+    }),
   },
   {
     slug: "tiktok-creator-earnings-benchmarks",
@@ -89,25 +193,92 @@ const blogPosts: BlogPost[] = [
       "Understand the levers behind TikTok earnings and how to model realistic outcomes with multiple revenue streams.",
     publishedAt: "2026-04-04",
     author: "CreatorCalculators",
-    content: [
-      { type: "p", text: "TikTok payouts vary more than most creators expect. Platform funds, affiliate links, and sponsorships create very different income profiles." },
-      { type: "h2", text: "Separate platform payouts from brand revenue" },
-      { type: "p", text: "Platform-driven earnings are usually volume-based, while brand revenue depends more on audience fit and conversion potential." },
-      { type: "ul", items: ["Platform payouts: driven by views and eligibility.", "Brand deals: driven by niche alignment and trust.", "Affiliate sales: driven by offer quality and intent."] },
-      { type: "h2", text: "Track engagement quality, not just reach" },
-      { type: "p", text: "High impressions with weak saves, comments, or profile clicks can underperform in sponsorship negotiations." },
-      { type: "h3", text: "Signals brands watch" },
-      { type: "ul", items: ["Comment depth and sentiment quality.", "Consistency of watch-through rate.", "Profile visits and outbound clicks."] },
-      { type: "h2", text: "Model monthly earnings with a blended approach" },
-      { type: "p", text: "A blended model combines predictable baseline income and occasional campaign upside. This avoids overestimating best-case months." },
-      {
-        type: "linkCard",
+    content: buildStandardBlogContent({
+      intro:
+        "TikTok earnings come from multiple streams, and each stream behaves differently. Understanding the mix helps you set realistic income goals and negotiate better deals.",
+      mainTopicExplanation: [
+        "Platform payouts, brand deals, and affiliate revenue should be modeled separately. They scale on different signals and have different levels of predictability.",
+        "Creators who track these streams independently can make better decisions about content strategy and monetization focus.",
+      ],
+      breakdown: {
+        explanation:
+          "A blended model gives clearer monthly expectations than relying on one payout source.",
+        bullets: [
+          "Platform payouts: $250/month baseline from eligible views",
+          "Affiliate revenue: $400/month from consistent product intent content",
+          "Brand deals: $1,200 from one sponsored post",
+          "Estimated total: about $1,850 for that month",
+        ],
+      },
+      factorsAffectingResults: [
+        "Niche fit and audience trust affect sponsorship rates.",
+        "Watch-through, saves, and profile clicks often matter more than raw reach.",
+        "Posting consistency impacts both algorithmic distribution and inbound opportunities.",
+      ],
+      whatThisMeansForCreators: [
+        "A creator with moderate reach can still earn well by improving conversion-focused metrics.",
+        "You do not need constant viral videos if your audience intent and engagement quality are strong.",
+      ],
+      realExample: [
+        "A beauty creator with 80,000 followers and steady engagement lands one $900 monthly brand deal and earns an extra $300 from affiliate links, plus a small platform payout.",
+        "Even without viral spikes, that can produce stable monthly income through consistent execution.",
+      ],
+      commonMistakesToAvoid: [
+        "Assuming views alone determine sponsorship value.",
+        "Undervaluing affiliate content because it grows more slowly.",
+        "Not tracking conversion signals for campaign reporting.",
+        "Accepting one-off low rates without a pricing framework.",
+      ],
+      tipsToIncreaseEarnings: [
+        "Create repeatable content formats tied to purchase intent.",
+        "Track saves, clicks, and conversion-focused metrics in a monthly report.",
+        "Build a media kit with recent campaign outcomes and audience fit.",
+        "Pitch package deals to increase average campaign value.",
+      ],
+      tryCalculator: {
         title: "Estimate TikTok income scenarios",
         description: "Use follower count, engagement, and payout assumptions to map low/base/high monthly outcomes.",
         href: "/tiktok-money-calculator",
         cta: "Use TikTok calculator",
       },
-    ],
+      relatedCalculators: [
+        { label: "TikTok Money Calculator", href: "/tiktok-money-calculator" },
+        { label: "YouTube Revenue Calculator", href: "/youtube-revenue-calculator" },
+        { label: "Brand Deal Value Calculator", href: "/brand-deal-value-calculator" },
+        { label: "All Calculators", href: "/" },
+      ],
+      summary: [
+        "TikTok income is strongest when modeled as a blended system, not one number.",
+        "Engagement quality and conversion intent often unlock better earnings than raw reach alone.",
+      ],
+      faq: [
+        {
+          question: "What is the most reliable TikTok income source?",
+          answer:
+            "Brand partnerships are often the largest source, but reliability improves when combined with affiliate and platform payouts.",
+        },
+        {
+          question: "How many income streams should I track?",
+          answer:
+            "At minimum, track platform payouts, brand deals, and affiliate revenue separately each month.",
+        },
+        {
+          question: "Do follower counts determine rates?",
+          answer:
+            "Follower count matters, but engagement quality, niche fit, and conversion potential usually matter more in pricing discussions.",
+        },
+        {
+          question: "How can I make my TikTok earnings more stable?",
+          answer:
+            "Use recurring content formats, maintain posting consistency, and diversify monetization sources.",
+        },
+        {
+          question: "When should I raise my rates?",
+          answer:
+            "Raise rates when your campaign results improve, your content quality increases, or demand for your audience fit grows.",
+        },
+      ],
+    }),
   },
   {
     slug: "brand-deal-pricing-framework-for-creators",
@@ -119,26 +290,134 @@ const blogPosts: BlogPost[] = [
       "A straightforward way to price creator sponsorships without undercharging for usage, exclusivity, or production time.",
     publishedAt: "2026-04-02",
     author: "CreatorCalculators",
-    content: [
-      { type: "p", text: "Many creators underprice partnerships because they charge only for posting. A better framework prices strategy, production, and rights separately." },
-      { type: "h2", text: "Define your base deliverable value" },
-      { type: "p", text: "Start with a base rate tied to expected reach and engagement. This is your anchor before any add-ons." },
-      { type: "h2", text: "Add fees for rights and exclusivity" },
-      { type: "p", text: "If a brand can reuse your content in ads, email, or paid social, that creates extra value and should be priced separately." },
-      { type: "h3", text: "Common pricing add-ons" },
-      { type: "ul", items: ["Paid usage window length.", "Category exclusivity period.", "Additional revision rounds or rush timelines."] },
-      { type: "h2", text: "Use ranges, then tighten with data" },
-      { type: "p", text: "Lead with a defensible range, then narrow after campaign scope and rights are finalized. This keeps negotiations flexible while protecting margins." },
-      {
-        type: "linkCard",
+    content: buildStandardBlogContent({
+      intro:
+        "Most creators undercharge when they price only the post itself. A better approach breaks pricing into deliverables, rights, and business impact.",
+      mainTopicExplanation: [
+        "Set a base rate first, then add clear line items for usage rights, exclusivity, and production complexity.",
+        "This structure helps you justify pricing professionally and protects long-term earning power.",
+      ],
+      breakdown: {
+        explanation:
+          "A simple pricing breakdown turns negotiation into clear scope decisions instead of random discounts.",
+        bullets: [
+          "Base content fee: $1,000",
+          "Paid usage rights (30 days): +$500",
+          "Category exclusivity (60 days): +$400",
+          "Total quote: $1,900",
+        ],
+      },
+      factorsAffectingResults: [
+        "Audience trust and niche value influence base rates.",
+        "Usage rights increase deal value because brands can repurpose your content.",
+        "Turnaround speed, revisions, and deliverable complexity affect production pricing.",
+      ],
+      whatThisMeansForCreators: [
+        "Clear pricing prevents undercharging and reduces negotiation friction.",
+        "Separating fees by scope helps creators grow from occasional deals into sustainable brand income.",
+      ],
+      realExample: [
+        "A creator initially offered $1,100 for one integrated video. After adding 90-day paid usage and category exclusivity, the final agreement reached $2,000.",
+        "The creator did not need more views, only a clearer pricing framework tied to business value.",
+      ],
+      commonMistakesToAvoid: [
+        "Charging one flat fee without rights breakdown.",
+        "Agreeing to broad usage terms without added compensation.",
+        "Ignoring exclusivity restrictions on future campaigns.",
+        "Discounting too early before scope is finalized.",
+      ],
+      tipsToIncreaseEarnings: [
+        "Use a standard pricing sheet with base and add-on line items.",
+        "Ask how and where content will be used before sending final rates.",
+        "Offer packages for multi-deliverable campaigns.",
+        "Track campaign outcomes to strengthen future negotiations.",
+      ],
+      tryCalculator: {
         title: "Check your sponsorship valuation",
         description: "Model brand deal value using audience metrics and campaign inputs.",
         href: "/brand-deal-value-calculator",
         cta: "Open brand deal calculator",
       },
-    ],
+      relatedCalculators: [
+        { label: "Brand Deal Value Calculator", href: "/brand-deal-value-calculator" },
+        { label: "TikTok Money Calculator", href: "/tiktok-money-calculator" },
+        { label: "YouTube Revenue Calculator", href: "/youtube-revenue-calculator" },
+        { label: "All Calculators", href: "/" },
+      ],
+      summary: [
+        "Strong brand deal pricing separates content production from usage and exclusivity value.",
+        "A structured framework protects margins and improves long-term earnings consistency.",
+      ],
+      faq: [
+        {
+          question: "How do I set a base brand deal rate?",
+          answer:
+            "Start from expected reach, engagement quality, niche value, and your production effort, then adjust with real campaign outcomes.",
+        },
+        {
+          question: "Should usage rights always cost extra?",
+          answer:
+            "Yes, because paid usage gives brands additional business value beyond the organic post.",
+        },
+        {
+          question: "How should I price exclusivity?",
+          answer:
+            "Price exclusivity based on the category, time period, and the opportunity cost of campaigns you may decline.",
+        },
+        {
+          question: "Is it okay to share a rate range first?",
+          answer:
+            "Yes, a range keeps negotiations flexible while you confirm scope and rights requirements.",
+        },
+        {
+          question: "What if a brand says my rate is too high?",
+          answer:
+            "Adjust scope before price when possible, and remove non-essential add-ons rather than discounting core value immediately.",
+        },
+      ],
+    }),
   },
 ]
+
+function buildStandardBlogContent(input: StandardBlogContentInput): BlogContentBlock[] {
+  const faqItems = input.faq.slice(0, 7)
+
+  return [
+    { type: "p", text: input.intro },
+    { type: "h2", text: "Main topic explanation" },
+    ...input.mainTopicExplanation.map((text): BlogParagraphBlock => ({ type: "p", text })),
+    { type: "h2", text: "Breakdown (numbers, examples)" },
+    { type: "p", text: input.breakdown.explanation },
+    { type: "ul", items: input.breakdown.bullets },
+    { type: "h2", text: "Factors affecting results" },
+    ...input.factorsAffectingResults.map((text): BlogParagraphBlock => ({ type: "p", text })),
+    { type: "h2", text: "What This Means for Creators" },
+    ...input.whatThisMeansForCreators.map((text): BlogParagraphBlock => ({ type: "p", text })),
+    { type: "h2", text: "Real Example" },
+    ...input.realExample.map((text): BlogParagraphBlock => ({ type: "p", text })),
+    { type: "h2", text: "Common Mistakes to Avoid" },
+    { type: "ul", items: input.commonMistakesToAvoid },
+    { type: "h2", text: "Tips to Increase Earnings" },
+    { type: "ul", items: input.tipsToIncreaseEarnings },
+    { type: "h2", text: "Try the Calculator" },
+    {
+      type: "linkCard",
+      title: input.tryCalculator.title,
+      description: input.tryCalculator.description,
+      href: input.tryCalculator.href,
+      cta: input.tryCalculator.cta,
+    },
+    { type: "h2", text: "Summary" },
+    ...input.summary.map((text): BlogParagraphBlock => ({ type: "p", text })),
+    { type: "h2", text: "Related Calculators" },
+    { type: "linksList", items: input.relatedCalculators },
+    { type: "h2", text: "FAQ" },
+    ...faqItems.flatMap((item): BlogContentBlock[] => [
+      { type: "h3", text: item.question },
+      { type: "p", text: item.answer },
+    ]),
+  ]
+}
 
 export function slugifyHeading(text: string): string {
   return text

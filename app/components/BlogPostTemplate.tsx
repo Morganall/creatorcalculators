@@ -3,7 +3,6 @@ import Script from "next/script"
 import {
   type BlogPost,
   formatBlogDate,
-  getPostToc,
   slugifyHeading,
 } from "@/app/lib/blog"
 
@@ -12,8 +11,6 @@ type BlogPostTemplateProps = {
 }
 
 export default function BlogPostTemplate({ post }: BlogPostTemplateProps) {
-  const toc = getPostToc(post)
-
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -48,12 +45,6 @@ export default function BlogPostTemplate({ post }: BlogPostTemplateProps) {
 
       <article className="mx-auto max-w-3xl px-4 pb-24 pt-14 sm:px-6 sm:pt-20">
         <header className="space-y-4 border-b border-gray-200/70 pb-8 sm:space-y-5">
-          <p className="text-sm text-gray-500">
-            <Link href="/blog" className="hover:text-gray-700 transition-colors">
-              Blog
-            </Link>{" "}
-            / {post.title}
-          </p>
           <h1 className="font-serif text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl sm:leading-[1.04]">
             {post.title}
           </h1>
@@ -64,27 +55,6 @@ export default function BlogPostTemplate({ post }: BlogPostTemplateProps) {
           </div>
         </header>
 
-        {toc.length > 0 && (
-          <nav
-            aria-label="Table of contents"
-            className="mt-8 rounded-2xl border border-gray-200/70 bg-white/70 p-5 sm:p-6"
-          >
-            <h2 className="font-serif text-xl text-gray-900">Table of contents</h2>
-            <ol className="mt-4 space-y-2">
-              {toc.map((item) => (
-                <li
-                  key={item.id}
-                  className={item.level === 3 ? "ml-4 text-sm text-gray-600" : "text-gray-700"}
-                >
-                  <a href={`#${item.id}`} className="hover:text-gray-900 transition-colors">
-                    {item.text}
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </nav>
-        )}
-
         <div className="mt-10 space-y-5 text-base leading-8 text-gray-700 sm:text-lg sm:leading-9">
           {post.content.map((block, index) => {
             if (block.type === "h2") {
@@ -92,7 +62,7 @@ export default function BlogPostTemplate({ post }: BlogPostTemplateProps) {
                 <h2
                   id={slugifyHeading(block.text)}
                   key={`${block.type}-${index}`}
-                  className="scroll-mt-24 pt-3 font-serif text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl"
+                  className="scroll-mt-24 border-t border-gray-200/60 pt-8 font-serif text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl"
                 >
                   {block.text}
                 </h2>
@@ -116,6 +86,20 @@ export default function BlogPostTemplate({ post }: BlogPostTemplateProps) {
                 <ul key={`${block.type}-${index}`} className="list-disc space-y-2 pl-6 marker:text-gray-500">
                   {block.items.map((item) => (
                     <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              )
+            }
+
+            if (block.type === "linksList") {
+              return (
+                <ul key={`${block.type}-${index}`} className="list-disc space-y-2 pl-6 marker:text-gray-500">
+                  {block.items.map((item) => (
+                    <li key={item.href}>
+                      <Link href={item.href} className="hover:text-gray-900 transition-colors">
+                        {item.label}
+                      </Link>
+                    </li>
                   ))}
                 </ul>
               )
