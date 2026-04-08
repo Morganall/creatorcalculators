@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import fs from "node:fs";
 import path from "node:path";
+import { getAllBlogSlugs } from "@/app/lib/blog";
 
 const baseUrl = "https://creatorcalculators.com";
 
@@ -59,40 +60,15 @@ function getStaticAppRoutes(): string[] {
 
   walk(appDir);
 
-  // If a blog section exists, try to enumerate static blog slugs from common
-  // content directories (so /blog/* can be included in the sitemap).
   const blogDir = path.join(appDir, "blog");
   if (fs.existsSync(blogDir)) {
-    pages.push(...getContentBackedBlogRoutes());
+    pages.push(...getAllBlogSlugs().map((slug) => `/blog/${slug}`));
   }
 
   // Always include homepage, even if discovery ever changes.
   pages.push("/");
 
   return Array.from(new Set(pages)).sort((a, b) => a.localeCompare(b));
-}
-
-function getContentBackedBlogRoutes(): string[] {
-  const root = process.cwd();
-  const candidateDirs = [
-    path.join(root, "content", "blog"),
-    path.join(root, "content", "posts"),
-    path.join(root, "posts"),
-  ];
-
-  const routes: string[] = [];
-  for (const dir of candidateDirs) {
-    if (!fs.existsSync(dir) || !fs.statSync(dir).isDirectory()) continue;
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      if (!entry.isFile()) continue;
-      const ext = path.extname(entry.name).toLowerCase();
-      if (ext !== ".md" && ext !== ".mdx") continue;
-      const slug = path.basename(entry.name, ext);
-      if (!slug) continue;
-      routes.push(`/blog/${slug}`);
-    }
-  }
-  return routes;
 }
 
 function routeFromAppPagePath(relativePathFromApp: string): string | null {

@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import Script from "next/script";
 import { Geist_Mono, Inter, Playfair_Display } from "next/font/google"
 import { headers } from "next/headers"
 import "./globals.css"
@@ -84,6 +83,14 @@ export default function RootLayout({
                       About
                     </Link>
                   </li>
+                  <li>
+                    <Link
+                      href="/blog"
+                      className="text-gray-600 hover:text-gray-900 transition-colors"
+                    >
+                      Blog
+                    </Link>
+                  </li>
                 </ul>
               </nav>
             </div>
@@ -114,6 +121,14 @@ export default function RootLayout({
                       className="hover:text-gray-700 transition-colors"
                     >
                       Contact
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/blog"
+                      className="hover:text-gray-700 transition-colors"
+                    >
+                      Blog
                     </Link>
                   </li>
                   <li>
