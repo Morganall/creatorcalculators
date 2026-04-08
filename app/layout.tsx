@@ -31,6 +31,14 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "Creator Calculators",
     description:
       "Free calculators for creators, influencers, and content marketers to estimate earnings, engagement, and growth.",
+    icons: {
+      icon: [
+        { url: "/favicon.ico", type: "image/x-icon" },
+        { url: "/favicon.png", sizes: "32x32", type: "image/png" },
+        { url: "/favicon-64.png", sizes: "64x64", type: "image/png" },
+      ],
+      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    },
     verification: {
       google: "h-pOPORtn14SmLXEozxCFAOoW0CV-mTOf9RPOtHCxEc",
     },
