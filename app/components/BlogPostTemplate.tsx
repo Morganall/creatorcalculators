@@ -123,6 +123,49 @@ export default function BlogPostTemplate({ post }: BlogPostTemplateProps) {
               )
             }
 
+            if (block.type === "highlight") {
+              return (
+                <aside
+                  key={`${block.type}-${index}`}
+                  className="rounded-2xl border border-indigo-100 bg-indigo-50/70 px-5 py-4 text-[15px] leading-7 text-indigo-900 sm:px-6 sm:text-base"
+                >
+                  {block.text}
+                </aside>
+              )
+            }
+
+            if (block.type === "table") {
+              return (
+                <div
+                  key={`${block.type}-${index}`}
+                  className="overflow-x-auto rounded-2xl border border-gray-200/80 bg-white"
+                >
+                  <table className="min-w-full text-left text-sm text-gray-700 sm:text-base">
+                    <thead className="bg-gray-50 text-gray-900">
+                      <tr>
+                        {block.headers.map((header) => (
+                          <th key={header} className="px-4 py-3 font-semibold">
+                            {header}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {block.rows.map((row, rowIndex) => (
+                        <tr key={`${row.join("-")}-${rowIndex}`} className="border-t border-gray-200/70">
+                          {row.map((cell, cellIndex) => (
+                            <td key={`${cell}-${cellIndex}`} className="px-4 py-3 align-top">
+                              {cell}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )
+            }
+
             return <p key={`${block.type}-${index}`}>{block.text}</p>
           })}
         </div>
